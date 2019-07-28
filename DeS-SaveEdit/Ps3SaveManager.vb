@@ -11,24 +11,25 @@ Namespace PS3FileSystem
             If Not Directory.Exists(savedir) Then
                 Throw New Exception("No such directory exist!")
             End If
-            If Not File.Exists(savedir & "\PARAM.PFD") Then
-                Throw New Exception("Rootdirectory does not contain any PARAM.PFD, Please load a valid directory")
-            End If
+            ' If Not File.Exists(savedir & "\PARAM.PFD") Then
+            '     Throw New Exception("Rootdirectory does not contain any PARAM.PFD, Please load a valid directory")
+            ' End If
             If Not File.Exists(savedir & "\PARAM.SFO") Then
                 Throw New Exception("Rootdirectory does not contain any PARAM.SFO, Please load a valid directory")
             End If
-            Param_PFD = New Param_PFD(savedir & "\PARAM.PFD")
+            ' Param_PFD = New Param_PFD(savedir & "\PARAM.PFD")
             Param_SFO = New PARAM_SFO(savedir & "\PARAM.SFO")
-            If securefileid IsNot Nothing Then
-                Param_PFD.SecureFileID = securefileid
-            End If
+            ' If securefileid IsNot Nothing Then
+            '     Param_PFD.SecureFileID = securefileid
+            ' End If
             RootPath = savedir
             If File.Exists(savedir & "\ICON0.PNG") Then
                 'prevent file lock,reading to memory instead.
                 SaveImage = Image.FromStream(New MemoryStream(File.ReadAllBytes(savedir & "\ICON0.PNG")))
             End If
 
-            Files = (From ent In Param_PFD.Entries Let x = New FileInfo(savedir & "\" & Convert.ToString(ent.file_name)) Where x.Extension.ToUpper() <> ".PFD" AndAlso x.Extension.ToUpper() <> ".SFO" Select New Ps3File(savedir & "\" & Convert.ToString(ent.file_name), ent, Me)).ToArray()
+            ' Files = (From ent In Param_PFD.Entries Let x = New FileInfo(savedir & "\" & Convert.ToString(ent.file_name)) Where x.Extension.ToUpper() <> ".PFD" AndAlso x.Extension.ToUpper() <> ".SFO" Select New Ps3File(savedir & "\" & Convert.ToString(ent.file_name), ent, Me)).ToArray()
+            Files = (From file_path In Directory.GetFiles(savedir) Let x = New FileInfo(file_path) Where x.Extension.ToUpper() <> ".PFD" AndAlso x.Extension.ToUpper() <> ".SFO" Select New Ps3File(file_path, Nothing, Me)).ToArray()
         End Sub
 
         Public Property RootPath() As String

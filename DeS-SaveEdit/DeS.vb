@@ -112,16 +112,17 @@ Public Class DeS
     Private Sub btnDeSOpen_Click(sender As System.Object, e As System.EventArgs) Handles btnDeSOpen.Click
 
 
-        Try
+        ' Try
             filename = "PARAM.SFO"
             bytes = System.IO.File.ReadAllBytes(txtDeSFolder.Text & "\" & filename)
 
             txtProfNum.Text = bytes(&H570)
 
             manager = New Ps3SaveManager(txtDeSFolder.Text, SecureID)
-            filename = "1USER.DAT"
+            filename = "\USER.DAT"
 
-            file = manager.Files.FirstOrDefault(Function(t) t.PFDEntry.file_name = filename)
+            ' file = manager.Files.FirstOrDefault(Function(t) t.PFDEntry.file_name = filename)
+            file = manager.Files.FirstOrDefault(Function(t) t.FilePath.EndsWith(filename))
             bytes = file.DecryptToBytes
 
             txtWorld.Text = Convert.ToUInt16(bytes(&H4))
@@ -244,22 +245,22 @@ Public Class DeS
 
             chkArchSealed.Checked = Not OneByteAnd(&H1F965, &H40)
 
-        Catch ex As Exception
-            MsgBox("Failed to open save.  Either you or I did something dumb..." & ex.Message)
-        End Try
+        ' Catch ex As Exception
+        '     MsgBox("Failed to open save.  Either you or I did something dumb..." & ex.Message)
+        ' End Try
 
     End Sub
     Private Sub btnDeSSave_Click(sender As System.Object, e As System.EventArgs) Handles btnDeSSave.Click
 
-        Try
-            filename = "PARAM.SFO"
-            bytes = System.IO.File.ReadAllBytes(txtDeSFolder.Text & "\" & filename)
-            bytes(&H570) = Val(txtProfNum.Text)
-            System.IO.File.WriteAllBytes(txtDeSFolder.Text & "\" & filename, bytes)
+        ' Try
+            ' filename = "PARAM.SFO"
+            ' bytes = System.IO.File.ReadAllBytes(txtDeSFolder.Text & "\" & filename)
+            ' bytes(&H570) = Val(txtProfNum.Text)
+            ' System.IO.File.WriteAllBytes(txtDeSFolder.Text & "\" & filename, bytes)
 
 
-            filename = "1USER.DAT"
-            file = manager.Files.FirstOrDefault(Function(t) t.PFDEntry.file_name = filename)
+            filename = "\USER.DAT"
+            file = manager.Files.FirstOrDefault(Function(t) t.FilePath.EndsWith(filename))
             bytes = file.DecryptToBytes
 
             bytes(&H4) = Val(txtWorld.Text)
@@ -430,31 +431,31 @@ Public Class DeS
             bytes(&H1F965) = (bytes(&H1F965) And &HBF) Or &H40 * ((Not chkArchSealed.Checked) * -1)
 
             file.Encrypt(bytes)
-            manager.ReBuildChanges()
+            ' manager.ReBuildChanges()
 
 
 
 
-            filename = "104USER.DAT"
-            file = manager.Files.FirstOrDefault(Function(t) t.PFDEntry.file_name = filename)
-            bytes = file.DecryptToBytes
+            ' filename = "104USER.DAT"
+            ' file = manager.Files.FirstOrDefault(Function(t) t.PFDEntry.file_name = filename)
+            ' bytes = file.DecryptToBytes
 
-            For i = 0 To &H10
-                If i < txtName.Text.Length Then
-                    bytes(&H21D + i * 2) = Microsoft.VisualBasic.Asc(txtName.Text(i))
-                Else
-                    bytes(&H21D + i * 2) = 0
-                End If
-                bytes(&H21D + i * 2 + 1) = 0
-            Next
+            ' For i = 0 To &H10
+            '     If i < txtName.Text.Length Then
+            '         bytes(&H21D + i * 2) = Microsoft.VisualBasic.Asc(txtName.Text(i))
+            '     Else
+            '         bytes(&H21D + i * 2) = 0
+            '     End If
+            '     bytes(&H21D + i * 2 + 1) = 0
+            ' Next
 
-            file.Encrypt(bytes)
-            manager.ReBuildChanges()
+            ' file.Encrypt(bytes)
+            ' manager.ReBuildChanges()
 
             MsgBox("Save Completed")
-        Catch ex As Exception
-            MsgBox("Save failed, no specific reason.  Either you or I did something dumb..." & ex.Message)
-        End Try
+        ' Catch ex As Exception
+        '     MsgBox("Save failed, no specific reason.  Either you or I did something dumb..." & ex.Message)
+        ' End Try
     End Sub
 
     Private Sub txtDeSBrowse_Click(sender As System.Object, e As System.EventArgs) Handles btnDeSBrowse.Click
