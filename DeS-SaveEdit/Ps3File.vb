@@ -49,7 +49,8 @@ Namespace PS3FileSystem
         End Function
 
         Public Function DecryptToBytes() As Byte()
-            Return Manager.Param_PFD.DecryptToBytes(FilePath)
+            ' Return Manager.Param_PFD.DecryptToBytes(FilePath)
+            Return File.ReadAllBytes(FilePath)
         End Function
 
         Public Function DecryptToStream() As Stream
@@ -61,7 +62,13 @@ Namespace PS3FileSystem
         End Function
 
         Public Function Encrypt(data As Byte()) As Boolean
-            Return Manager.Param_PFD.Encrypt(data, Me)
+            ' Return Manager.Param_PFD.Encrypt(data, Me)
+            Try
+                File.WriteAllBytes(FilePath, data)
+                Return True
+            Catch
+                Return False
+            End Try
         End Function
 
         Public Function EncryptToBytes() As Byte()
