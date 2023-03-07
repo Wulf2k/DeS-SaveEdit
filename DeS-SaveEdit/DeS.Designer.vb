@@ -43,7 +43,6 @@ Partial Class DeS
         Me.btnSendMoney = New System.Windows.Forms.Button()
         Me.txtNexusTendency = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
         Me.txtCurrMP = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.txtStr = New System.Windows.Forms.TextBox()
@@ -77,6 +76,15 @@ Partial Class DeS
         Me.Label24 = New System.Windows.Forms.Label()
         Me.tabCtrl = New System.Windows.Forms.TabControl()
         Me.tabChar = New System.Windows.Forms.TabPage()
+        Me.lblWorldName = New System.Windows.Forms.Label()
+        Me.Label53 = New System.Windows.Forms.Label()
+        Me.Label51 = New System.Windows.Forms.Label()
+        Me.txtF2 = New System.Windows.Forms.TextBox()
+        Me.txtMiracleSlots = New System.Windows.Forms.TextBox()
+        Me.Label52 = New System.Windows.Forms.Label()
+        Me.Label50 = New System.Windows.Forms.Label()
+        Me.txtF1 = New System.Windows.Forms.TextBox()
+        Me.txtSpellSlots = New System.Windows.Forms.TextBox()
         Me.cmbStartClass = New System.Windows.Forms.ComboBox()
         Me.Label47 = New System.Windows.Forms.Label()
         Me.Label36 = New System.Windows.Forms.Label()
@@ -147,10 +155,12 @@ Partial Class DeS
         Me.txtSoulMem = New System.Windows.Forms.TextBox()
         Me.txtProfNum = New System.Windows.Forms.TextBox()
         Me.Label25 = New System.Windows.Forms.Label()
-        Me.Label50 = New System.Windows.Forms.Label()
-        Me.txtSpellSlots = New System.Windows.Forms.TextBox()
-        Me.Label51 = New System.Windows.Forms.Label()
-        Me.txtMiracleSlots = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtXpos = New System.Windows.Forms.TextBox()
+        Me.Label54 = New System.Windows.Forms.Label()
+        Me.txtYpos = New System.Windows.Forms.TextBox()
+        Me.txtZpos = New System.Windows.Forms.TextBox()
+        Me.Label55 = New System.Windows.Forms.Label()
         Me.tabCtrl.SuspendLayout()
         Me.tabChar.SuspendLayout()
         Me.TabEquipment.SuspendLayout()
@@ -217,7 +227,7 @@ Partial Class DeS
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(835, 98)
+        Me.Label1.Location = New System.Drawing.Point(692, 56)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(53, 13)
         Me.Label1.TabIndex = 4
@@ -225,14 +235,14 @@ Partial Class DeS
         '
         'txtCharTendency
         '
-        Me.txtCharTendency.Location = New System.Drawing.Point(891, 95)
+        Me.txtCharTendency.Location = New System.Drawing.Point(748, 53)
         Me.txtCharTendency.Name = "txtCharTendency"
         Me.txtCharTendency.Size = New System.Drawing.Size(44, 20)
         Me.txtCharTendency.TabIndex = 5
         '
         'txtW1Tendency
         '
-        Me.txtW1Tendency.Location = New System.Drawing.Point(891, 137)
+        Me.txtW1Tendency.Location = New System.Drawing.Point(748, 95)
         Me.txtW1Tendency.Name = "txtW1Tendency"
         Me.txtW1Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW1Tendency.TabIndex = 7
@@ -240,7 +250,7 @@ Partial Class DeS
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(844, 140)
+        Me.Label2.Location = New System.Drawing.Point(701, 98)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(44, 13)
         Me.Label2.TabIndex = 6
@@ -248,7 +258,7 @@ Partial Class DeS
         '
         'txtW2Tendency
         '
-        Me.txtW2Tendency.Location = New System.Drawing.Point(891, 158)
+        Me.txtW2Tendency.Location = New System.Drawing.Point(748, 116)
         Me.txtW2Tendency.Name = "txtW2Tendency"
         Me.txtW2Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW2Tendency.TabIndex = 9
@@ -256,7 +266,7 @@ Partial Class DeS
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(844, 161)
+        Me.Label3.Location = New System.Drawing.Point(701, 119)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(44, 13)
         Me.Label3.TabIndex = 8
@@ -264,7 +274,7 @@ Partial Class DeS
         '
         'txtW3Tendency
         '
-        Me.txtW3Tendency.Location = New System.Drawing.Point(891, 179)
+        Me.txtW3Tendency.Location = New System.Drawing.Point(748, 137)
         Me.txtW3Tendency.Name = "txtW3Tendency"
         Me.txtW3Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW3Tendency.TabIndex = 11
@@ -272,7 +282,7 @@ Partial Class DeS
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(844, 182)
+        Me.Label4.Location = New System.Drawing.Point(701, 140)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(44, 13)
         Me.Label4.TabIndex = 10
@@ -280,7 +290,7 @@ Partial Class DeS
         '
         'txtW4Tendency
         '
-        Me.txtW4Tendency.Location = New System.Drawing.Point(891, 200)
+        Me.txtW4Tendency.Location = New System.Drawing.Point(748, 158)
         Me.txtW4Tendency.Name = "txtW4Tendency"
         Me.txtW4Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW4Tendency.TabIndex = 13
@@ -288,7 +298,7 @@ Partial Class DeS
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(844, 203)
+        Me.Label5.Location = New System.Drawing.Point(701, 161)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(44, 13)
         Me.Label5.TabIndex = 12
@@ -296,7 +306,7 @@ Partial Class DeS
         '
         'txtW5Tendency
         '
-        Me.txtW5Tendency.Location = New System.Drawing.Point(891, 221)
+        Me.txtW5Tendency.Location = New System.Drawing.Point(748, 179)
         Me.txtW5Tendency.Name = "txtW5Tendency"
         Me.txtW5Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW5Tendency.TabIndex = 15
@@ -304,7 +314,7 @@ Partial Class DeS
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(844, 224)
+        Me.Label6.Location = New System.Drawing.Point(701, 182)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(44, 13)
         Me.Label6.TabIndex = 14
@@ -313,7 +323,7 @@ Partial Class DeS
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(881, 63)
+        Me.Label7.Location = New System.Drawing.Point(738, 21)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(63, 13)
         Me.Label7.TabIndex = 16
@@ -321,16 +331,16 @@ Partial Class DeS
         '
         'btnSendMoney
         '
-        Me.btnSendMoney.Location = New System.Drawing.Point(903, 656)
+        Me.btnSendMoney.Location = New System.Drawing.Point(880, 494)
         Me.btnSendMoney.Name = "btnSendMoney"
         Me.btnSendMoney.Size = New System.Drawing.Size(126, 42)
         Me.btnSendMoney.TabIndex = 22
-        Me.btnSendMoney.Text = "Send Wulf Stripper Money via Paypal"
+        Me.btnSendMoney.Text = "Support via Paypal"
         Me.btnSendMoney.UseVisualStyleBackColor = True
         '
         'txtNexusTendency
         '
-        Me.txtNexusTendency.Location = New System.Drawing.Point(891, 116)
+        Me.txtNexusTendency.Location = New System.Drawing.Point(748, 74)
         Me.txtNexusTendency.Name = "txtNexusTendency"
         Me.txtNexusTendency.Size = New System.Drawing.Size(44, 20)
         Me.txtNexusTendency.TabIndex = 24
@@ -338,20 +348,11 @@ Partial Class DeS
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(851, 119)
+        Me.Label8.Location = New System.Drawing.Point(708, 77)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(37, 13)
         Me.Label8.TabIndex = 23
         Me.Label8.Text = "Nexus"
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(717, 671)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(180, 13)
-        Me.Label9.TabIndex = 26
-        Me.Label9.Text = "You may safely ignore this button --->"
         '
         'txtCurrMP
         '
@@ -613,9 +614,21 @@ Partial Class DeS
         '
         'tabChar
         '
+        Me.tabChar.Controls.Add(Me.Label9)
+        Me.tabChar.Controls.Add(Me.txtXpos)
+        Me.tabChar.Controls.Add(Me.Label54)
+        Me.tabChar.Controls.Add(Me.txtYpos)
+        Me.tabChar.Controls.Add(Me.txtZpos)
+        Me.tabChar.Controls.Add(Me.Label55)
+        Me.tabChar.Controls.Add(Me.lblWorldName)
+        Me.tabChar.Controls.Add(Me.Label53)
         Me.tabChar.Controls.Add(Me.Label51)
+        Me.tabChar.Controls.Add(Me.txtF2)
+        Me.tabChar.Controls.Add(Me.btnSendMoney)
         Me.tabChar.Controls.Add(Me.txtMiracleSlots)
+        Me.tabChar.Controls.Add(Me.Label52)
         Me.tabChar.Controls.Add(Me.Label50)
+        Me.tabChar.Controls.Add(Me.txtF1)
         Me.tabChar.Controls.Add(Me.txtSpellSlots)
         Me.tabChar.Controls.Add(Me.cmbStartClass)
         Me.tabChar.Controls.Add(Me.Label47)
@@ -689,6 +702,81 @@ Partial Class DeS
         Me.tabChar.Text = "Character"
         Me.tabChar.UseVisualStyleBackColor = True
         '
+        'lblWorldName
+        '
+        Me.lblWorldName.AutoSize = True
+        Me.lblWorldName.Location = New System.Drawing.Point(889, 56)
+        Me.lblWorldName.Name = "lblWorldName"
+        Me.lblWorldName.Size = New System.Drawing.Size(57, 13)
+        Me.lblWorldName.TabIndex = 82
+        Me.lblWorldName.Text = "(unknown)"
+        '
+        'Label53
+        '
+        Me.Label53.AutoSize = True
+        Me.Label53.Location = New System.Drawing.Point(6, 523)
+        Me.Label53.Name = "Label53"
+        Me.Label53.Size = New System.Drawing.Size(19, 13)
+        Me.Label53.TabIndex = 63
+        Me.Label53.Text = "F2"
+        '
+        'Label51
+        '
+        Me.Label51.AutoSize = True
+        Me.Label51.Location = New System.Drawing.Point(32, 339)
+        Me.Label51.Name = "Label51"
+        Me.Label51.Size = New System.Drawing.Size(67, 13)
+        Me.Label51.TabIndex = 80
+        Me.Label51.Text = "Miracle Slots"
+        '
+        'txtF2
+        '
+        Me.txtF2.Enabled = False
+        Me.txtF2.Location = New System.Drawing.Point(31, 520)
+        Me.txtF2.Name = "txtF2"
+        Me.txtF2.Size = New System.Drawing.Size(115, 20)
+        Me.txtF2.TabIndex = 64
+        '
+        'txtMiracleSlots
+        '
+        Me.txtMiracleSlots.Location = New System.Drawing.Point(102, 336)
+        Me.txtMiracleSlots.Name = "txtMiracleSlots"
+        Me.txtMiracleSlots.Size = New System.Drawing.Size(44, 20)
+        Me.txtMiracleSlots.TabIndex = 81
+        '
+        'Label52
+        '
+        Me.Label52.AutoSize = True
+        Me.Label52.Location = New System.Drawing.Point(6, 497)
+        Me.Label52.Name = "Label52"
+        Me.Label52.Size = New System.Drawing.Size(19, 13)
+        Me.Label52.TabIndex = 61
+        Me.Label52.Text = "F1"
+        '
+        'Label50
+        '
+        Me.Label50.AutoSize = True
+        Me.Label50.Location = New System.Drawing.Point(43, 318)
+        Me.Label50.Name = "Label50"
+        Me.Label50.Size = New System.Drawing.Size(56, 13)
+        Me.Label50.TabIndex = 78
+        Me.Label50.Text = "Spell Slots"
+        '
+        'txtF1
+        '
+        Me.txtF1.Enabled = False
+        Me.txtF1.Location = New System.Drawing.Point(31, 494)
+        Me.txtF1.Name = "txtF1"
+        Me.txtF1.Size = New System.Drawing.Size(115, 20)
+        Me.txtF1.TabIndex = 62
+        '
+        'txtSpellSlots
+        '
+        Me.txtSpellSlots.Location = New System.Drawing.Point(102, 315)
+        Me.txtSpellSlots.Name = "txtSpellSlots"
+        Me.txtSpellSlots.Size = New System.Drawing.Size(44, 20)
+        Me.txtSpellSlots.TabIndex = 79
+        '
         'cmbStartClass
         '
         Me.cmbStartClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -711,7 +799,7 @@ Partial Class DeS
         'Label36
         '
         Me.Label36.AutoSize = True
-        Me.Label36.Location = New System.Drawing.Point(884, 77)
+        Me.Label36.Location = New System.Drawing.Point(741, 35)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(54, 13)
         Me.Label36.TabIndex = 75
@@ -815,7 +903,7 @@ Partial Class DeS
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(853, 9)
+        Me.Label26.Location = New System.Drawing.Point(801, 56)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(35, 13)
         Me.Label26.TabIndex = 60
@@ -823,14 +911,14 @@ Partial Class DeS
         '
         'txtWorld
         '
-        Me.txtWorld.Location = New System.Drawing.Point(891, 6)
+        Me.txtWorld.Location = New System.Drawing.Point(839, 53)
         Me.txtWorld.Name = "txtWorld"
         Me.txtWorld.Size = New System.Drawing.Size(44, 20)
         Me.txtWorld.TabIndex = 61
         '
         'txtBlock
         '
-        Me.txtBlock.Location = New System.Drawing.Point(891, 27)
+        Me.txtBlock.Location = New System.Drawing.Point(839, 74)
         Me.txtBlock.Name = "txtBlock"
         Me.txtBlock.Size = New System.Drawing.Size(44, 20)
         Me.txtBlock.TabIndex = 63
@@ -838,7 +926,7 @@ Partial Class DeS
         'Label27
         '
         Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(854, 30)
+        Me.Label27.Location = New System.Drawing.Point(802, 77)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(34, 13)
         Me.Label27.TabIndex = 62
@@ -1372,48 +1460,62 @@ Partial Class DeS
         Me.Label25.TabIndex = 60
         Me.Label25.Text = "Profile #"
         '
-        'Label50
+        'Label9
         '
-        Me.Label50.AutoSize = True
-        Me.Label50.Location = New System.Drawing.Point(43, 318)
-        Me.Label50.Name = "Label50"
-        Me.Label50.Size = New System.Drawing.Size(56, 13)
-        Me.Label50.TabIndex = 78
-        Me.Label50.Text = "Spell Slots"
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(819, 115)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(14, 13)
+        Me.Label9.TabIndex = 83
+        Me.Label9.Text = "X"
         '
-        'txtSpellSlots
+        'txtXpos
         '
-        Me.txtSpellSlots.Location = New System.Drawing.Point(102, 315)
-        Me.txtSpellSlots.Name = "txtSpellSlots"
-        Me.txtSpellSlots.Size = New System.Drawing.Size(44, 20)
-        Me.txtSpellSlots.TabIndex = 79
+        Me.txtXpos.Location = New System.Drawing.Point(839, 112)
+        Me.txtXpos.Name = "txtXpos"
+        Me.txtXpos.Size = New System.Drawing.Size(107, 20)
+        Me.txtXpos.TabIndex = 84
         '
-        'Label51
+        'Label54
         '
-        Me.Label51.AutoSize = True
-        Me.Label51.Location = New System.Drawing.Point(32, 339)
-        Me.Label51.Name = "Label51"
-        Me.Label51.Size = New System.Drawing.Size(67, 13)
-        Me.Label51.TabIndex = 80
-        Me.Label51.Text = "Miracle Slots"
+        Me.Label54.AutoSize = True
+        Me.Label54.Location = New System.Drawing.Point(819, 136)
+        Me.Label54.Name = "Label54"
+        Me.Label54.Size = New System.Drawing.Size(14, 13)
+        Me.Label54.TabIndex = 85
+        Me.Label54.Text = "Y"
         '
-        'txtMiracleSlots
+        'txtYpos
         '
-        Me.txtMiracleSlots.Location = New System.Drawing.Point(102, 336)
-        Me.txtMiracleSlots.Name = "txtMiracleSlots"
-        Me.txtMiracleSlots.Size = New System.Drawing.Size(44, 20)
-        Me.txtMiracleSlots.TabIndex = 81
+        Me.txtYpos.Location = New System.Drawing.Point(839, 133)
+        Me.txtYpos.Name = "txtYpos"
+        Me.txtYpos.Size = New System.Drawing.Size(107, 20)
+        Me.txtYpos.TabIndex = 86
+        '
+        'txtZpos
+        '
+        Me.txtZpos.Location = New System.Drawing.Point(839, 154)
+        Me.txtZpos.Name = "txtZpos"
+        Me.txtZpos.Size = New System.Drawing.Size(107, 20)
+        Me.txtZpos.TabIndex = 88
+        '
+        'Label55
+        '
+        Me.Label55.AutoSize = True
+        Me.Label55.Location = New System.Drawing.Point(819, 157)
+        Me.Label55.Name = "Label55"
+        Me.Label55.Size = New System.Drawing.Size(14, 13)
+        Me.Label55.TabIndex = 87
+        Me.Label55.Text = "Z"
         '
         'DeS
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1041, 710)
+        Me.ClientSize = New System.Drawing.Size(1030, 654)
         Me.Controls.Add(Me.Label25)
         Me.Controls.Add(Me.txtProfNum)
         Me.Controls.Add(Me.tabCtrl)
-        Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.btnSendMoney)
         Me.Controls.Add(Me.btnDeSBrowse)
         Me.Controls.Add(Me.btnDeSSave)
         Me.Controls.Add(Me.btnDeSOpen)
@@ -1467,7 +1569,6 @@ Partial Class DeS
     Friend WithEvents btnSendMoney As System.Windows.Forms.Button
     Friend WithEvents txtNexusTendency As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents txtCurrMP As System.Windows.Forms.TextBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents txtStr As System.Windows.Forms.TextBox
@@ -1575,5 +1676,15 @@ Partial Class DeS
     Friend WithEvents txtMiracleSlots As System.Windows.Forms.TextBox
     Friend WithEvents Label50 As System.Windows.Forms.Label
     Friend WithEvents txtSpellSlots As System.Windows.Forms.TextBox
-
+    Friend WithEvents Label53 As Label
+    Friend WithEvents txtF2 As TextBox
+    Friend WithEvents Label52 As Label
+    Friend WithEvents txtF1 As TextBox
+    Friend WithEvents lblWorldName As Label
+    Friend WithEvents Label9 As Label
+    Friend WithEvents txtXpos As TextBox
+    Friend WithEvents Label54 As Label
+    Friend WithEvents txtYpos As TextBox
+    Friend WithEvents txtZpos As TextBox
+    Friend WithEvents Label55 As Label
 End Class

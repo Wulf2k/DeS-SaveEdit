@@ -46,26 +46,33 @@ Public Class DeS
     Private Function FourByteFloat(ByRef bytes, start) As String
         Return HexToSingle(Hex(bytes(start)).PadLeft(2, "0"c).ToString & Hex(bytes(start + 1)).PadLeft(2, "0"c).ToString & Hex(bytes(start + 2)).PadLeft(2, "0"c).ToString & Hex(bytes(start + 3)).PadLeft(2, "0"c).ToString)
     End Function
-    Private Function RInt32(ByRef bytes, start) As Int32
-        Dim ba(4) As Byte
+    Private Function RInt32(start) As Int32
+        Dim ba(3) As Byte
         Array.Copy(bytes, start, ba, 0, 4)
         If bigendian Then Array.Reverse(ba)
 
-        Return BitConverter.ToInt32(ba, 1)
+        Return BitConverter.ToInt32(ba, 0)
     End Function
-    Private Function RUInt32(ByRef bytes, start) As UInteger
-        Dim ba(4) As Byte
+    Private Function RUInt32(start) As UInteger
+        Dim ba(3) As Byte
         Array.Copy(bytes, start, ba, 0, 4)
         If bigendian Then Array.Reverse(ba)
 
-        Return BitConverter.ToUInt32(ba, 1)
+        Return BitConverter.ToUInt32(ba, 0)
     End Function
-    Private Function TwoByteInt16(ByRef bytes, start) As Int32
-        Dim value = 0
-        For i = 0 To 1
-            value = value + bytes(start + i) * (256 ^ (1 - i))
-        Next
-        Return value
+    Private Function RInt16(start) As Int16
+        Dim ba(1) As Byte
+        Array.Copy(bytes, start, ba, 0, 2)
+        If bigendian Then Array.Reverse(ba)
+
+        Return BitConverter.ToInt16(ba, 0)
+    End Function
+    Private Function RSingle(start) As Single
+        Dim ba(3) As Byte
+        Array.Copy(bytes, start, ba, 0, 4)
+        If bigendian Then Array.Reverse(ba)
+
+        Return BitConverter.ToSingle(ba, 0)
     End Function
 
     Private Function Int32ToFourByte(ByVal val As String) As Byte()
@@ -122,10 +129,32 @@ Public Class DeS
     Private Function ReverseFourBytes(ByVal byt() As Byte)
         Return {byt(3), byt(2), byt(1), byt(0)}
     End Function
-    Private Sub InsBytes(ByVal loc As UInteger, ByVal byt As Byte())
-        For i = 0 To byt.Length - 1
-            bytes(loc + i) = byt(i)
-        Next
+    Private Sub WBytes(ByVal loc As UInteger, ByVal byt As Byte())
+        Array.Copy(byt, 0, bytes, loc, byt.Length)
+    End Sub
+    Private Sub WInt8(ByVal loc As UInteger, ByVal val As SByte)
+        bytes(loc) = val
+    End Sub
+    Private Sub WInt32(ByVal loc As UInteger, ByVal val As Int32)
+        Dim ba(3) As Byte
+        ba = BitConverter.GetBytes(val)
+        If bigendian Then Array.Reverse(ba)
+        WBytes(loc, ba)
+    End Sub
+    Private Sub WUInt8(ByVal loc As UInteger, ByVal val As Byte)
+        bytes(loc) = val
+    End Sub
+    Private Sub WUInt32(ByVal loc As UInteger, ByVal val As UInt32)
+        Dim ba(3) As Byte
+        ba = BitConverter.GetBytes(val)
+        If bigendian Then Array.Reverse(ba)
+        WBytes(loc, ba)
+    End Sub
+    Private Sub WSingle(ByVal loc As UInteger, ByVal val As Single)
+        Dim ba(3) As Byte
+        ba = BitConverter.GetBytes(val)
+        If bigendian Then Array.Reverse(ba)
+        WBytes(loc, ba)
     End Sub
 
     Private Sub btnDeSOpen_Click(sender As System.Object, e As System.EventArgs) Handles btnDeSOpen.Click
@@ -145,32 +174,45 @@ Public Class DeS
                 encrypted = False
             End If
 
-            filename = "1USER.DAT"
 
+            If Not IO.File.Exists(txtDeSFolder.Text & "1USER.DAT") Then txtF1.Text = "USER.DAT"
+            If Not IO.File.Exists(txtDeSFolder.Text & "2USER.DAT") Then txtF1.Text = "1USER.DAT"
+            If Not IO.File.Exists(txtDeSFolder.Text & "USER.DAT") Then txtF1.Text = "2USER.DAT"
 
+            If Not IO.File.Exists(txtDeSFolder.Text & "04USER.DAT") Then txtF2.Text = "204USER.DAT"
+            If Not IO.File.Exists(txtDeSFolder.Text & "104USER.DAT") Then txtF2.Text = "04USER.DAT"
+            If Not IO.File.Exists(txtDeSFolder.Text & "204USER.DAT") Then txtF2.Text = "104USER.DAT"
+
+            filename = txtF1.Text
             bytes = FileToBytes(filename)
-
 
             txtWorld.Text = Convert.ToUInt16(bytes(&H4))
             txtBlock.Text = Convert.ToUInt16(bytes(&H5))
 
-            txtCurrHP.Text = RInt32(bytes, &H50)
-            txtMaxHP.Text = RInt32(bytes, &H58)
-            txtCurrMP.Text = RInt32(bytes, &H5C)
-            txtMaxMP.Text = RInt32(bytes, &H64)
-            txtCurrStam.Text = RInt32(bytes, &H6C)
-            txtMaxStam.Text = RInt32(bytes, &H74)
-            txtVit.Text = RInt32(bytes, &H80)
-            txtInt.Text = RInt32(bytes, &H88)
-            txtEnd.Text = RInt32(bytes, &H90)
-            txtStr.Text = RInt32(bytes, &H98)
-            txtDex.Text = RInt32(bytes, &HA0)
-            txtMagic.Text = RInt32(bytes, &HA8)
-            txtFaith.Text = RInt32(bytes, &HB0)
-            txtLuck.Text = RInt32(bytes, &HB8)
-            txtSouls.Text = RInt32(bytes, &HC0)
-            txtSoulMem.Text = RInt32(bytes, &HC8)
-            txtLevelsPurchased.Text = RInt32(bytes, &HCC)
+            Dim posOffset As UInteger = 0
+            posOffset = RInt16(&H21AE1)
+
+            txtXpos.Text = RSingle(&H21AE3 + posOffset)
+            txtYpos.Text = RSingle(&H21AE3 + posOffset + 4)
+            txtZpos.Text = RSingle(&H21AE3 + posOffset + 8)
+
+            txtCurrHP.Text = RInt32(&H50)
+            txtMaxHP.Text = RInt32(&H58)
+            txtCurrMP.Text = RInt32(&H5C)
+            txtMaxMP.Text = RInt32(&H64)
+            txtCurrStam.Text = RInt32(&H6C)
+            txtMaxStam.Text = RInt32(&H74)
+            txtVit.Text = RInt32(&H80)
+            txtInt.Text = RInt32(&H88)
+            txtEnd.Text = RInt32(&H90)
+            txtStr.Text = RInt32(&H98)
+            txtDex.Text = RInt32(&HA0)
+            txtMagic.Text = RInt32(&HA8)
+            txtFaith.Text = RInt32(&HB0)
+            txtLuck.Text = RInt32(&HB8)
+            txtSouls.Text = RInt32(&HC0)
+            txtSoulMem.Text = RInt32(&HC8)
+            txtLevelsPurchased.Text = RInt32(&HCC)
 
             txtName.Text = GetUnicodeStr(&HD4, &H21)
 
@@ -178,32 +220,32 @@ Public Class DeS
 
             cmbStartClass.SelectedIndex = bytes(&HFB)
 
-            cmbLeftHand1.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(bytes, &H28C))
-            cmbRightHand1.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(bytes, &H290))
-            cmbLeftHand2.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(bytes, &H294))
-            cmbRightHand2.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(bytes, &H298))
+            cmbLeftHand1.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(&H28C))
+            cmbRightHand1.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(&H290))
+            cmbLeftHand2.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(&H294))
+            cmbRightHand2.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(&H298))
 
-            cmbArrows.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(bytes, &H29C))
-            cmbBolts.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(bytes, &H2A0))
+            cmbArrows.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(&H29C))
+            cmbBolts.SelectedIndex = Array.IndexOf(cllWeapons, RUInt32(&H2A0))
 
-            cmbHelmet.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(bytes, &H2A4))
-            cmbChest.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(bytes, &H2A8))
-            cmbGauntlets.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(bytes, &H2AC))
-            cmbLeggings.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(bytes, &H2B0))
+            cmbHelmet.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(&H2A4))
+            cmbChest.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(&H2A8))
+            cmbGauntlets.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(&H2AC))
+            cmbLeggings.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(&H2B0))
 
-            cmbHairstyle.SelectedIndex = Array.IndexOf(cllHairstyles, RUInt32(bytes, &H2B4))
+            cmbHairstyle.SelectedIndex = Array.IndexOf(cllHairstyles, RUInt32(&H2B4))
 
-            cmbRing1.SelectedIndex = Array.IndexOf(cllRings, RUInt32(bytes, &H2B8))
-            cmbRing2.SelectedIndex = Array.IndexOf(cllRings, RUInt32(bytes, &H2BC))
+            cmbRing1.SelectedIndex = Array.IndexOf(cllRings, RUInt32(&H2B8))
+            cmbRing2.SelectedIndex = Array.IndexOf(cllRings, RUInt32(&H2BC))
 
-            cmbQuickSlot1.SelectedIndex = Array.IndexOf(cllItems, RUInt32(bytes, &H2C0))
-            cmbQuickSlot2.SelectedIndex = Array.IndexOf(cllItems, RUInt32(bytes, &H2C4))
-            cmbQuickSlot3.SelectedIndex = Array.IndexOf(cllItems, RUInt32(bytes, &H2C8))
-            cmbQuickSlot4.SelectedIndex = Array.IndexOf(cllItems, RUInt32(bytes, &H2CC))
-            cmbQuickSlot5.SelectedIndex = Array.IndexOf(cllItems, RUInt32(bytes, &H2D0))
+            cmbQuickSlot1.SelectedIndex = Array.IndexOf(cllItems, RUInt32(&H2C0))
+            cmbQuickSlot2.SelectedIndex = Array.IndexOf(cllItems, RUInt32(&H2C4))
+            cmbQuickSlot3.SelectedIndex = Array.IndexOf(cllItems, RUInt32(&H2C8))
+            cmbQuickSlot4.SelectedIndex = Array.IndexOf(cllItems, RUInt32(&H2CC))
+            cmbQuickSlot5.SelectedIndex = Array.IndexOf(cllItems, RUInt32(&H2D0))
 
 
-            Dim invCount As UInteger = RUInt32(bytes, &H2D4)
+            Dim invCount As UInteger = RUInt32(&H2D4)
             ReDim inventory(invCount, 8)
 
             dgvWeapons.Rows.Clear()
@@ -221,12 +263,12 @@ Public Class DeS
             Dim Misc3 As UInteger
 
             For i = 0 To invCount - 1
-                Type = RUInt32(bytes, &H2DC + i * &H20)
-                ItemID = RUInt32(bytes, &H2E0 + i * &H20)
-                ItemCount = RUInt32(bytes, &H2E4 + i * &H20)
-                Misc1 = RUInt32(bytes, &H2E8 + i * &H20)
-                Misc2 = RUInt32(bytes, &H2EC + i * &H20)
-                Misc3 = RUInt32(bytes, &H2F0 + i * &H20)
+                Type = RUInt32(&H2DC + i * &H20)
+                ItemID = RUInt32(&H2E0 + i * &H20)
+                ItemCount = RUInt32(&H2E4 + i * &H20)
+                Misc1 = RUInt32(&H2E8 + i * &H20)
+                Misc2 = RUInt32(&H2EC + i * &H20)
+                Misc3 = RUInt32(&H2F0 + i * &H20)
 
                 Select Case Type
                     Case 0
@@ -240,34 +282,34 @@ Public Class DeS
                 End Select
             Next
 
-            txtSpellSlots.Text = RUInt32(bytes, &H102E0)
-            txtMiracleSlots.Text = RUInt32(bytes, &H1030C)
+            txtSpellSlots.Text = RUInt32(&H102E0)
+            txtMiracleSlots.Text = RUInt32(&H1030C)
 
-            txtHairR.Text = Math.Round(Val(FourByteFloat(bytes, &H14368)), 3)
-            txtHairG.Text = Math.Round(Val(FourByteFloat(bytes, &H1436C)), 3)
-            txtHairB.Text = Math.Round(Val(FourByteFloat(bytes, &H14370)), 3)
+            txtHairR.Text = Math.Round(Val(RSingle(&H14368)), 3)
+            txtHairG.Text = Math.Round(Val(RSingle(&H1436C)), 3)
+            txtHairB.Text = Math.Round(Val(RSingle(&H14370)), 3)
 
-            Dim spellCount As UInteger = RUInt32(bytes, &H143E8)
+            Dim spellCount As UInteger = RUInt32(&H143E8)
             Dim spellStatus As UInteger
             Dim spellID As UInteger
 
 
             For i = 0 To spellCount - 1
-                spellStatus = RUInt32(bytes, &H143EC + i * &H10)
-                spellID = RUInt32(bytes, &H143F0 + i * &H10)
-                Misc1 = RUInt32(bytes, &H143F4 + i * &H10)
-                Misc2 = RUInt32(bytes, &H143F8 + i * &H10)
+                spellStatus = RUInt32(&H143EC + i * &H10)
+                spellID = RUInt32(&H143F0 + i * &H10)
+                Misc1 = RUInt32(&H143F4 + i * &H10)
+                Misc2 = RUInt32(&H143F8 + i * &H10)
 
                 dgvSpells.Rows.Add(cmbSpellSlot1.Items(Array.IndexOf(cllSpells, spellID)), cllSpellStatus(spellStatus), Misc1, Misc2)
             Next
 
-            txtCharTendency.Text = FourByteFloat(bytes, &H1EBF0)
-            txtNexusTendency.Text = FourByteFloat(bytes, &H1EBF8)
-            txtW1Tendency.Text = FourByteFloat(bytes, &H1EC00)
-            txtW2Tendency.Text = FourByteFloat(bytes, &H1EC20)
-            txtW3Tendency.Text = FourByteFloat(bytes, &H1EC10)
-            txtW4Tendency.Text = FourByteFloat(bytes, &H1EC08)
-            txtW5Tendency.Text = FourByteFloat(bytes, &H1EC18)
+            txtCharTendency.Text = RSingle(&H1EBF0)
+            txtNexusTendency.Text = RSingle(&H1EBF8)
+            txtW1Tendency.Text = RSingle(&H1EC00)
+            txtW2Tendency.Text = RSingle(&H1EC20)
+            txtW3Tendency.Text = RSingle(&H1EC10)
+            txtW4Tendency.Text = RSingle(&H1EC08)
+            txtW5Tendency.Text = RSingle(&H1EC18)
 
             chkArchSealed.Checked = Not OneByteAnd(&H1F965, &H40)
 
@@ -285,7 +327,7 @@ Public Class DeS
             System.IO.File.WriteAllBytes(txtDeSFolder.Text & "\" & filename, bytes)
 
 
-            filename = "1USER.DAT"
+            filename = txtF1.Text
             bytes = FileToBytes(filename)
 
             bytes(&H4) = Val(txtWorld.Text)
@@ -294,34 +336,41 @@ Public Class DeS
             bytes(&H6) = 0
             bytes(&H7) = 0
 
-            InsBytes(&H50, Int32ToFourByte(txtCurrHP.Text))
-            InsBytes(&H58, Int32ToFourByte(txtMaxHP.Text))
-            InsBytes(&H5C, Int32ToFourByte(txtCurrMP.Text))
-            InsBytes(&H64, Int32ToFourByte(txtMaxMP.Text))
-            InsBytes(&H6C, Int32ToFourByte(txtCurrStam.Text))
-            InsBytes(&H74, Int32ToFourByte(txtMaxStam.Text))
+            Dim posOffset As UInteger = 0
+            posOffset = RInt16(&H21AE1)
 
-            InsBytes(&H7C, Int32ToFourByte(txtVit.Text))
-            InsBytes(&H80, Int32ToFourByte(txtVit.Text))
-            InsBytes(&H84, Int32ToFourByte(txtInt.Text))
-            InsBytes(&H88, Int32ToFourByte(txtInt.Text))
-            InsBytes(&H8C, Int32ToFourByte(txtEnd.Text))
-            InsBytes(&H90, Int32ToFourByte(txtEnd.Text))
-            InsBytes(&H94, Int32ToFourByte(txtStr.Text))
-            InsBytes(&H98, Int32ToFourByte(txtStr.Text))
-            InsBytes(&H9C, Int32ToFourByte(txtDex.Text))
-            InsBytes(&HA0, Int32ToFourByte(txtDex.Text))
-            InsBytes(&HA4, Int32ToFourByte(txtMagic.Text))
-            InsBytes(&HA8, Int32ToFourByte(txtMagic.Text))
-            InsBytes(&HAC, Int32ToFourByte(txtFaith.Text))
-            InsBytes(&HB0, Int32ToFourByte(txtFaith.Text))
-            InsBytes(&HB4, Int32ToFourByte(txtLuck.Text))
-            InsBytes(&HB8, Int32ToFourByte(txtLuck.Text))
+            WSingle(&H21AE3 + posOffset, Val(txtXpos.Text))
+            WSingle(&H21AE3 + posOffset + 4, Val(txtYpos.Text))
+            WSingle(&H21AE3 + posOffset + 8, Val(txtZpos.Text))
 
-            InsBytes(&HBC, Int32ToFourByte(txtSouls.Text))
-            InsBytes(&HC8, Int32ToFourByte(txtSoulMem.Text))
+            WInt32(&H50, Val(txtCurrHP.Text))
+            WBytes(&H58, Int32ToFourByte(txtMaxHP.Text))
+            WBytes(&H5C, Int32ToFourByte(txtCurrMP.Text))
+            WBytes(&H64, Int32ToFourByte(txtMaxMP.Text))
+            WBytes(&H6C, Int32ToFourByte(txtCurrStam.Text))
+            WBytes(&H74, Int32ToFourByte(txtMaxStam.Text))
 
-            InsBytes(&HCC, Int32ToFourByte(txtLevelsPurchased.Text))
+            WBytes(&H7C, Int32ToFourByte(txtVit.Text))
+            WBytes(&H80, Int32ToFourByte(txtVit.Text))
+            WBytes(&H84, Int32ToFourByte(txtInt.Text))
+            WBytes(&H88, Int32ToFourByte(txtInt.Text))
+            WBytes(&H8C, Int32ToFourByte(txtEnd.Text))
+            WBytes(&H90, Int32ToFourByte(txtEnd.Text))
+            WBytes(&H94, Int32ToFourByte(txtStr.Text))
+            WBytes(&H98, Int32ToFourByte(txtStr.Text))
+            WBytes(&H9C, Int32ToFourByte(txtDex.Text))
+            WBytes(&HA0, Int32ToFourByte(txtDex.Text))
+            WBytes(&HA4, Int32ToFourByte(txtMagic.Text))
+            WBytes(&HA8, Int32ToFourByte(txtMagic.Text))
+            WBytes(&HAC, Int32ToFourByte(txtFaith.Text))
+            WBytes(&HB0, Int32ToFourByte(txtFaith.Text))
+            WBytes(&HB4, Int32ToFourByte(txtLuck.Text))
+            WBytes(&HB8, Int32ToFourByte(txtLuck.Text))
+
+            WBytes(&HBC, Int32ToFourByte(txtSouls.Text))
+            WBytes(&HC8, Int32ToFourByte(txtSoulMem.Text))
+
+            WBytes(&HCC, Int32ToFourByte(txtLevelsPurchased.Text))
 
             For i = 0 To &H10
                 If i < txtName.Text.Length Then
@@ -336,122 +385,122 @@ Public Class DeS
 
             bytes(&HFB) = cmbStartClass.SelectedIndex
 
-            InsBytes(&H28C, UInt32ToFourByte(cllWeapons(cmbLeftHand1.SelectedIndex)))
-            InsBytes(&H290, UInt32ToFourByte(cllWeapons(cmbRightHand1.SelectedIndex)))
-            InsBytes(&H294, UInt32ToFourByte(cllWeapons(cmbLeftHand2.SelectedIndex)))
-            InsBytes(&H298, UInt32ToFourByte(cllWeapons(cmbRightHand2.SelectedIndex)))
+            WBytes(&H28C, UInt32ToFourByte(cllWeapons(cmbLeftHand1.SelectedIndex)))
+            WBytes(&H290, UInt32ToFourByte(cllWeapons(cmbRightHand1.SelectedIndex)))
+            WBytes(&H294, UInt32ToFourByte(cllWeapons(cmbLeftHand2.SelectedIndex)))
+            WBytes(&H298, UInt32ToFourByte(cllWeapons(cmbRightHand2.SelectedIndex)))
 
-            InsBytes(&H29C, UInt32ToFourByte(cllWeapons(cmbArrows.SelectedIndex)))
-            InsBytes(&H2A0, UInt32ToFourByte(cllWeapons(cmbBolts.SelectedIndex)))
+            WBytes(&H29C, UInt32ToFourByte(cllWeapons(cmbArrows.SelectedIndex)))
+            WBytes(&H2A0, UInt32ToFourByte(cllWeapons(cmbBolts.SelectedIndex)))
 
-            InsBytes(&H2A4, UInt32ToFourByte(cllArmor(cmbHelmet.SelectedIndex)))
-            InsBytes(&H2A8, UInt32ToFourByte(cllArmor(cmbChest.SelectedIndex)))
-            InsBytes(&H2AC, UInt32ToFourByte(cllArmor(cmbGauntlets.SelectedIndex)))
-            InsBytes(&H2B0, UInt32ToFourByte(cllArmor(cmbLeggings.SelectedIndex)))
+            WBytes(&H2A4, UInt32ToFourByte(cllArmor(cmbHelmet.SelectedIndex)))
+            WBytes(&H2A8, UInt32ToFourByte(cllArmor(cmbChest.SelectedIndex)))
+            WBytes(&H2AC, UInt32ToFourByte(cllArmor(cmbGauntlets.SelectedIndex)))
+            WBytes(&H2B0, UInt32ToFourByte(cllArmor(cmbLeggings.SelectedIndex)))
 
-            InsBytes(&H2B4, UInt32ToFourByte(cllHairstyles(cmbHairstyle.SelectedIndex)))
-            InsBytes(&H2B8, UInt32ToFourByte(cllRings(cmbRing1.SelectedIndex)))
-            InsBytes(&H2BC, UInt32ToFourByte(cllRings(cmbRing2.SelectedIndex)))
+            WBytes(&H2B4, UInt32ToFourByte(cllHairstyles(cmbHairstyle.SelectedIndex)))
+            WBytes(&H2B8, UInt32ToFourByte(cllRings(cmbRing1.SelectedIndex)))
+            WBytes(&H2BC, UInt32ToFourByte(cllRings(cmbRing2.SelectedIndex)))
 
             REM InsBytes(&H2C0, UInt32ToFourByte(cllItems(cmbQuickSlot1.SelectedIndex)))
             REM InsBytes(&H2C4, UInt32ToFourByte(cllItems(cmbQuickSlot2.SelectedIndex)))
             REM InsBytes(&H2C8, UInt32ToFourByte(cllItems(cmbQuickSlot3.SelectedIndex)))
             REM InsBytes(&H2CC, UInt32ToFourByte(cllItems(cmbQuickSlot4.SelectedIndex)))
             REM InsBytes(&H2D0, UInt32ToFourByte(cllItems(cmbQuickSlot5.SelectedIndex)))
-            InsBytes(&H2D4, UInt32ToFourByte(dgvWeapons.Rows.Count + dgvArmor.Rows.Count + dgvRings.Rows.Count + dgvGoods.Rows.Count - 4))
+            WBytes(&H2D4, UInt32ToFourByte(dgvWeapons.Rows.Count + dgvArmor.Rows.Count + dgvRings.Rows.Count + dgvGoods.Rows.Count - 4))
 
             Dim invslot = 0
 
             If dgvWeapons.Rows.Count > 0 Then
                 For i = 0 To dgvWeapons.Rows.Count - 2
-                    InsBytes(&H2DC + invslot * &H20, UInt32ToFourByte(0))
-                    InsBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllWeapons(cmbLeftHand1.FindStringExact(dgvWeapons.Rows(i).Cells(0).FormattedValue))))
-                    InsBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(1).FormattedValue))
-                    InsBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(2).FormattedValue))
-                    InsBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(3).FormattedValue))
-                    InsBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(4).FormattedValue))
-                    InsBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
-                    InsBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2DC + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllWeapons(cmbLeftHand1.FindStringExact(dgvWeapons.Rows(i).Cells(0).FormattedValue))))
+                    WBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(1).FormattedValue))
+                    WBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(2).FormattedValue))
+                    WBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(3).FormattedValue))
+                    WBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(4).FormattedValue))
+                    WBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
                     invslot += 1
                 Next
             End If
 
             If dgvArmor.Rows.Count > 0 Then
                 For i = 0 To dgvArmor.Rows.Count - 2
-                    InsBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H10000000))
-                    InsBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllArmor(cmbChest.FindStringExact(dgvArmor.Rows(i).Cells(0).FormattedValue))))
-                    InsBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(1).FormattedValue))
-                    InsBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(2).FormattedValue))
-                    InsBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(3).FormattedValue))
-                    InsBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(4).FormattedValue))
-                    InsBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
-                    InsBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H10000000))
+                    WBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllArmor(cmbChest.FindStringExact(dgvArmor.Rows(i).Cells(0).FormattedValue))))
+                    WBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(1).FormattedValue))
+                    WBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(2).FormattedValue))
+                    WBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(3).FormattedValue))
+                    WBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(4).FormattedValue))
+                    WBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
                     invslot += 1
                 Next
             End If
 
             If dgvRings.Rows.Count > 0 Then
                 For i = 0 To dgvRings.Rows.Count - 2
-                    InsBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H20000000))
-                    InsBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllRings(cmbRing1.FindStringExact(dgvRings.Rows(i).Cells(0).FormattedValue))))
-                    InsBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(1).FormattedValue))
-                    InsBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(2).FormattedValue))
-                    InsBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(3).FormattedValue))
-                    InsBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(4).FormattedValue))
-                    InsBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
-                    InsBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H20000000))
+                    WBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllRings(cmbRing1.FindStringExact(dgvRings.Rows(i).Cells(0).FormattedValue))))
+                    WBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(1).FormattedValue))
+                    WBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(2).FormattedValue))
+                    WBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(3).FormattedValue))
+                    WBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(4).FormattedValue))
+                    WBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
                     invslot += 1
                 Next
             End If
 
             If dgvGoods.Rows.Count > 0 Then
                 For i = 0 To dgvGoods.Rows.Count - 2
-                    InsBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H40000000))
-                    InsBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllItems(cmbQuickSlot1.FindStringExact(dgvGoods.Rows(i).Cells(0).FormattedValue))))
-                    InsBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(1).FormattedValue))
-                    InsBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(2).FormattedValue))
-                    InsBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(3).FormattedValue))
-                    InsBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(4).FormattedValue))
-                    InsBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
-                    InsBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H40000000))
+                    WBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllItems(cmbQuickSlot1.FindStringExact(dgvGoods.Rows(i).Cells(0).FormattedValue))))
+                    WBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(1).FormattedValue))
+                    WBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(2).FormattedValue))
+                    WBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(3).FormattedValue))
+                    WBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(4).FormattedValue))
+                    WBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
+                    WBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
                     invslot += 1
                 Next
             End If
 
-            InsBytes(&H102E0, UInt32ToFourByte(Val(txtSpellSlots.Text)))
-            InsBytes(&H1030C, UInt32ToFourByte(Val(txtMiracleSlots.Text)))
+            WBytes(&H102E0, UInt32ToFourByte(Val(txtSpellSlots.Text)))
+            WBytes(&H1030C, UInt32ToFourByte(Val(txtMiracleSlots.Text)))
 
-            InsBytes(&H143E8, UInt32ToFourByte(dgvSpells.Rows.Count - 1))
+            WBytes(&H143E8, UInt32ToFourByte(dgvSpells.Rows.Count - 1))
             invslot = 0
             If dgvSpells.Rows.Count > 0 Then
                 For i = 0 To dgvSpells.Rows.Count - 2
-                    InsBytes(&H143EC + invslot * &H10, UInt32ToFourByte(Array.IndexOf(cllSpellStatus, dgvSpells.Rows(i).Cells(1).FormattedValue)))
-                    InsBytes(&H143F0 + invslot * &H10, UInt32ToFourByte(cllSpells(cmbSpellSlot1.FindStringExact(dgvSpells.Rows(i).Cells(0).FormattedValue))))
-                    InsBytes(&H143F4 + invslot * &H10, UInt32ToFourByte(dgvSpells.Rows(i).Cells(2).FormattedValue))
-                    InsBytes(&H143F8 + invslot * &H10, UInt32ToFourByte(dgvSpells.Rows(i).Cells(3).FormattedValue))
+                    WBytes(&H143EC + invslot * &H10, UInt32ToFourByte(Array.IndexOf(cllSpellStatus, dgvSpells.Rows(i).Cells(1).FormattedValue)))
+                    WBytes(&H143F0 + invslot * &H10, UInt32ToFourByte(cllSpells(cmbSpellSlot1.FindStringExact(dgvSpells.Rows(i).Cells(0).FormattedValue))))
+                    WBytes(&H143F4 + invslot * &H10, UInt32ToFourByte(dgvSpells.Rows(i).Cells(2).FormattedValue))
+                    WBytes(&H143F8 + invslot * &H10, UInt32ToFourByte(dgvSpells.Rows(i).Cells(3).FormattedValue))
                     invslot += 1
                 Next
             End If
 
-            InsBytes(&H14368, FloatToFourByte(txtHairR.Text))
-            InsBytes(&H1436C, FloatToFourByte(txtHairG.Text))
-            InsBytes(&H14370, FloatToFourByte(txtHairB.Text))
+            WBytes(&H14368, FloatToFourByte(txtHairR.Text))
+            WBytes(&H1436C, FloatToFourByte(txtHairG.Text))
+            WBytes(&H14370, FloatToFourByte(txtHairB.Text))
 
 
-            InsBytes(&H1EBF0, FloatToFourByte(txtCharTendency.Text))
+            WBytes(&H1EBF0, FloatToFourByte(txtCharTendency.Text))
 
-            InsBytes(&H1EBF8, FloatToFourByte(txtNexusTendency.Text))
-            InsBytes(&H1EBFC, FloatToFourByte(txtNexusTendency.Text))
-            InsBytes(&H1EC00, FloatToFourByte(txtW1Tendency.Text))
-            InsBytes(&H1EC04, FloatToFourByte(txtW1Tendency.Text))
-            InsBytes(&H1EC08, FloatToFourByte(txtW4Tendency.Text))
-            InsBytes(&H1EC0C, FloatToFourByte(txtW4Tendency.Text))
-            InsBytes(&H1EC10, FloatToFourByte(txtW3Tendency.Text))
-            InsBytes(&H1EC14, FloatToFourByte(txtW3Tendency.Text))
-            InsBytes(&H1EC18, FloatToFourByte(txtW5Tendency.Text))
-            InsBytes(&H1EC1C, FloatToFourByte(txtW5Tendency.Text))
-            InsBytes(&H1EC20, FloatToFourByte(txtW2Tendency.Text))
-            InsBytes(&H1EC24, FloatToFourByte(txtW2Tendency.Text))
+            WBytes(&H1EBF8, FloatToFourByte(txtNexusTendency.Text))
+            WBytes(&H1EBFC, FloatToFourByte(txtNexusTendency.Text))
+            WBytes(&H1EC00, FloatToFourByte(txtW1Tendency.Text))
+            WBytes(&H1EC04, FloatToFourByte(txtW1Tendency.Text))
+            WBytes(&H1EC08, FloatToFourByte(txtW4Tendency.Text))
+            WBytes(&H1EC0C, FloatToFourByte(txtW4Tendency.Text))
+            WBytes(&H1EC10, FloatToFourByte(txtW3Tendency.Text))
+            WBytes(&H1EC14, FloatToFourByte(txtW3Tendency.Text))
+            WBytes(&H1EC18, FloatToFourByte(txtW5Tendency.Text))
+            WBytes(&H1EC1C, FloatToFourByte(txtW5Tendency.Text))
+            WBytes(&H1EC20, FloatToFourByte(txtW2Tendency.Text))
+            WBytes(&H1EC24, FloatToFourByte(txtW2Tendency.Text))
 
             bytes(&H1F965) = (bytes(&H1F965) And &HBF) Or &H40 * ((Not chkArchSealed.Checked) * -1)
 
@@ -460,7 +509,8 @@ Public Class DeS
 
 
 
-            filename = "104USER.DAT"
+
+            filename = txtF2.Text
             bytes = FileToBytes(filename)
 
 
@@ -472,6 +522,12 @@ Public Class DeS
                 End If
                 bytes(&H21D + i * 2 + 1) = 0
             Next
+
+            WInt8(&H24C, Val(txtWorld.Text))
+
+
+
+
 
             BytesToFile(filename, bytes)
 
@@ -491,8 +547,31 @@ Public Class DeS
     Private Sub txtDeSFile_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtDeSFolder.TextChanged
         folder = UCase(txtDeSFolder.Text)
     End Sub
+    REM txtWorld
+    Private Sub txtWorld_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtWorld.TextChanged
+        Select Case txtWorld.Text
+            Case "1"
+                lblWorldName.Text = "The Nexus"
+            Case "2"
+                lblWorldName.Text = "Boletarian Palace"
+            Case "3"
+                lblWorldName.Text = "Shrine of Storms"
+            Case "4"
+                lblWorldName.Text = "Tower of Latria"
+            Case "5"
+                lblWorldName.Text = "Valley of Defilement"
+            Case "6"
+                lblWorldName.Text = "Stonefang Tunnel"
+            Case "7"
+                lblWorldName.Text = "Northern Limit"
+            Case "8"
+                lblWorldName.Text = "Tutorial"
+            Case Else
+                lblWorldName.Text = "(unknown)"
+        End Select
+    End Sub
     Private Sub btnSendMoney_Click(sender As Object, e As EventArgs) Handles btnSendMoney.Click
-        System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=D7UD87LN43ERN")
+        System.Diagnostics.Process.Start("https://www.paypal.me/wulf2k")
     End Sub
 
     Sub InitArrays()
