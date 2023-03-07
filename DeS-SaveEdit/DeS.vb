@@ -43,9 +43,7 @@ Public Class DeS
     End Function
 
 
-    Private Function FourByteFloat(ByRef bytes, start) As String
-        Return HexToSingle(Hex(bytes(start)).PadLeft(2, "0"c).ToString & Hex(bytes(start + 1)).PadLeft(2, "0"c).ToString & Hex(bytes(start + 2)).PadLeft(2, "0"c).ToString & Hex(bytes(start + 3)).PadLeft(2, "0"c).ToString)
-    End Function
+
     Private Function RInt32(start) As Int32
         Dim ba(3) As Byte
         Array.Copy(bytes, start, ba, 0, 4)
@@ -74,32 +72,7 @@ Public Class DeS
 
         Return BitConverter.ToSingle(ba, 0)
     End Function
-
-    Private Function Int32ToFourByte(ByVal val As String) As Byte()
-        If val.Length > 0 Then
-            Return ReverseFourBytes(BitConverter.GetBytes(Convert.ToInt32(val)))
-        Else
-            Return {0, 0, 0, 0}
-        End If
-    End Function
-    Private Function Int32ToFourByte(ByVal val As Integer) As Byte()
-        Return ReverseFourBytes(BitConverter.GetBytes(Convert.ToInt32(val)))
-    End Function
-    Private Function UInt32ToFourByte(ByVal val As UInteger) As Byte()
-        Return ReverseFourBytes(BitConverter.GetBytes(Convert.ToUInt32(val)))
-    End Function
-    Private Function FloatToFourByte(ByVal val As String) As Byte()
-        If IsNumeric(val) Then
-            Return ReverseFourBytes(BitConverter.GetBytes(Convert.ToSingle(val)))
-        Else
-            Return {0, 0, 0, 0}
-        End If
-    End Function
-
-    Private Function OneByteAnd(ByVal loc As UInteger, ByVal cmp As UInteger) As Boolean
-        Return ((bytes(loc) And cmp) > 0)
-    End Function
-    Private Function GetUnicodeStr(ByVal loc As UInteger, ByVal len As UInteger) As String
+    Private Function RUniStr(ByVal loc As UInteger, ByVal len As UInteger) As String
         Dim buildstr As String = ""
 
         For i As UInteger = 0 To len
@@ -112,23 +85,13 @@ Public Class DeS
         Return buildstr
     End Function
 
-    Private Function HexToSingle(ByVal hexValue As String) As Single
-        Dim iInputIndex As Integer = 0
-        Dim iOutputIndex As Integer = 0
-        Dim bArray(3) As Byte
 
-        For iInputIndex = 0 To hexValue.Length - 1 Step 2
-            bArray(iOutputIndex) = Byte.Parse(hexValue.Chars(iInputIndex) & hexValue.Chars(iInputIndex + 1), Globalization.NumberStyles.HexNumber)
-            iOutputIndex += 1
-        Next
 
-        Array.Reverse(bArray)
-        Return BitConverter.ToSingle(bArray, 0)
 
-    End Function
-    Private Function ReverseFourBytes(ByVal byt() As Byte)
-        Return {byt(3), byt(2), byt(1), byt(0)}
-    End Function
+
+
+
+
     Private Sub WBytes(ByVal loc As UInteger, ByVal byt As Byte())
         Array.Copy(byt, 0, bytes, loc, byt.Length)
     End Sub
@@ -156,6 +119,14 @@ Public Class DeS
         If bigendian Then Array.Reverse(ba)
         WBytes(loc, ba)
     End Sub
+
+
+
+
+    Private Function OneByteAnd(ByVal loc As UInteger, ByVal cmp As UInteger) As Boolean
+        Return ((bytes(loc) And cmp) > 0)
+    End Function
+
 
     Private Sub btnDeSOpen_Click(sender As System.Object, e As System.EventArgs) Handles btnDeSOpen.Click
 
@@ -214,7 +185,7 @@ Public Class DeS
             txtSoulMem.Text = RInt32(&HC8)
             txtLevelsPurchased.Text = RInt32(&HCC)
 
-            txtName.Text = GetUnicodeStr(&HD4, &H21)
+            txtName.Text = RUniStr(&HD4, &H21)
 
             cmbGender.SelectedIndex = bytes(&HF6)
 
@@ -344,33 +315,33 @@ Public Class DeS
             WSingle(&H21AE3 + posOffset + 8, Val(txtZpos.Text))
 
             WInt32(&H50, Val(txtCurrHP.Text))
-            WBytes(&H58, Int32ToFourByte(txtMaxHP.Text))
-            WBytes(&H5C, Int32ToFourByte(txtCurrMP.Text))
-            WBytes(&H64, Int32ToFourByte(txtMaxMP.Text))
-            WBytes(&H6C, Int32ToFourByte(txtCurrStam.Text))
-            WBytes(&H74, Int32ToFourByte(txtMaxStam.Text))
+            WInt32(&H58, Val(txtMaxHP.Text))
+            WInt32(&H5C, Val(txtCurrMP.Text))
+            WInt32(&H64, Val(txtMaxMP.Text))
+            WInt32(&H6C, Val(txtCurrStam.Text))
+            WInt32(&H74, Val(txtMaxStam.Text))
 
-            WBytes(&H7C, Int32ToFourByte(txtVit.Text))
-            WBytes(&H80, Int32ToFourByte(txtVit.Text))
-            WBytes(&H84, Int32ToFourByte(txtInt.Text))
-            WBytes(&H88, Int32ToFourByte(txtInt.Text))
-            WBytes(&H8C, Int32ToFourByte(txtEnd.Text))
-            WBytes(&H90, Int32ToFourByte(txtEnd.Text))
-            WBytes(&H94, Int32ToFourByte(txtStr.Text))
-            WBytes(&H98, Int32ToFourByte(txtStr.Text))
-            WBytes(&H9C, Int32ToFourByte(txtDex.Text))
-            WBytes(&HA0, Int32ToFourByte(txtDex.Text))
-            WBytes(&HA4, Int32ToFourByte(txtMagic.Text))
-            WBytes(&HA8, Int32ToFourByte(txtMagic.Text))
-            WBytes(&HAC, Int32ToFourByte(txtFaith.Text))
-            WBytes(&HB0, Int32ToFourByte(txtFaith.Text))
-            WBytes(&HB4, Int32ToFourByte(txtLuck.Text))
-            WBytes(&HB8, Int32ToFourByte(txtLuck.Text))
+            WInt32(&H7C, Val(txtVit.Text))
+            WInt32(&H80, Val(txtVit.Text))
+            WInt32(&H84, Val(txtInt.Text))
+            WInt32(&H88, Val(txtInt.Text))
+            WInt32(&H8C, Val(txtEnd.Text))
+            WInt32(&H90, Val(txtEnd.Text))
+            WInt32(&H94, Val(txtStr.Text))
+            WInt32(&H98, Val(txtStr.Text))
+            WInt32(&H9C, Val(txtDex.Text))
+            WInt32(&HA0, Val(txtDex.Text))
+            WInt32(&HA4, Val(txtMagic.Text))
+            WInt32(&HA8, Val(txtMagic.Text))
+            WInt32(&HAC, Val(txtFaith.Text))
+            WInt32(&HB0, Val(txtFaith.Text))
+            WInt32(&HB4, Val(txtLuck.Text))
+            WInt32(&HB8, Val(txtLuck.Text))
 
-            WBytes(&HBC, Int32ToFourByte(txtSouls.Text))
-            WBytes(&HC8, Int32ToFourByte(txtSoulMem.Text))
+            WInt32(&HBC, Val(txtSouls.Text))
+            WInt32(&HC8, Val(txtSoulMem.Text))
 
-            WBytes(&HCC, Int32ToFourByte(txtLevelsPurchased.Text))
+            WInt32(&HCC, Val(txtLevelsPurchased.Text))
 
             For i = 0 To &H10
                 If i < txtName.Text.Length Then
@@ -385,122 +356,122 @@ Public Class DeS
 
             bytes(&HFB) = cmbStartClass.SelectedIndex
 
-            WBytes(&H28C, UInt32ToFourByte(cllWeapons(cmbLeftHand1.SelectedIndex)))
-            WBytes(&H290, UInt32ToFourByte(cllWeapons(cmbRightHand1.SelectedIndex)))
-            WBytes(&H294, UInt32ToFourByte(cllWeapons(cmbLeftHand2.SelectedIndex)))
-            WBytes(&H298, UInt32ToFourByte(cllWeapons(cmbRightHand2.SelectedIndex)))
+            WUInt32(&H28C, Val(cllWeapons(cmbLeftHand1.SelectedIndex)))
+            WUInt32(&H290, Val(cllWeapons(cmbRightHand1.SelectedIndex)))
+            WUInt32(&H294, Val(cllWeapons(cmbLeftHand2.SelectedIndex)))
+            WUInt32(&H298, Val(cllWeapons(cmbRightHand2.SelectedIndex)))
 
-            WBytes(&H29C, UInt32ToFourByte(cllWeapons(cmbArrows.SelectedIndex)))
-            WBytes(&H2A0, UInt32ToFourByte(cllWeapons(cmbBolts.SelectedIndex)))
+            WUInt32(&H29C, Val(cllWeapons(cmbArrows.SelectedIndex)))
+            WUInt32(&H2A0, Val(cllWeapons(cmbBolts.SelectedIndex)))
 
-            WBytes(&H2A4, UInt32ToFourByte(cllArmor(cmbHelmet.SelectedIndex)))
-            WBytes(&H2A8, UInt32ToFourByte(cllArmor(cmbChest.SelectedIndex)))
-            WBytes(&H2AC, UInt32ToFourByte(cllArmor(cmbGauntlets.SelectedIndex)))
-            WBytes(&H2B0, UInt32ToFourByte(cllArmor(cmbLeggings.SelectedIndex)))
+            WUInt32(&H2A4, Val(cllArmor(cmbHelmet.SelectedIndex)))
+            WUInt32(&H2A8, Val(cllArmor(cmbChest.SelectedIndex)))
+            WUInt32(&H2AC, Val(cllArmor(cmbGauntlets.SelectedIndex)))
+            WUInt32(&H2B0, Val(cllArmor(cmbLeggings.SelectedIndex)))
 
-            WBytes(&H2B4, UInt32ToFourByte(cllHairstyles(cmbHairstyle.SelectedIndex)))
-            WBytes(&H2B8, UInt32ToFourByte(cllRings(cmbRing1.SelectedIndex)))
-            WBytes(&H2BC, UInt32ToFourByte(cllRings(cmbRing2.SelectedIndex)))
+            WUInt32(&H2B4, Val(cllHairstyles(cmbHairstyle.SelectedIndex)))
+            WUInt32(&H2B8, Val(cllRings(cmbRing1.SelectedIndex)))
+            WUInt32(&H2BC, Val(cllRings(cmbRing2.SelectedIndex)))
 
             REM InsBytes(&H2C0, UInt32ToFourByte(cllItems(cmbQuickSlot1.SelectedIndex)))
             REM InsBytes(&H2C4, UInt32ToFourByte(cllItems(cmbQuickSlot2.SelectedIndex)))
             REM InsBytes(&H2C8, UInt32ToFourByte(cllItems(cmbQuickSlot3.SelectedIndex)))
             REM InsBytes(&H2CC, UInt32ToFourByte(cllItems(cmbQuickSlot4.SelectedIndex)))
             REM InsBytes(&H2D0, UInt32ToFourByte(cllItems(cmbQuickSlot5.SelectedIndex)))
-            WBytes(&H2D4, UInt32ToFourByte(dgvWeapons.Rows.Count + dgvArmor.Rows.Count + dgvRings.Rows.Count + dgvGoods.Rows.Count - 4))
+            WUInt32(&H2D4, Val(dgvWeapons.Rows.Count + dgvArmor.Rows.Count + dgvRings.Rows.Count + dgvGoods.Rows.Count - 4))
 
             Dim invslot = 0
 
             If dgvWeapons.Rows.Count > 0 Then
                 For i = 0 To dgvWeapons.Rows.Count - 2
-                    WBytes(&H2DC + invslot * &H20, UInt32ToFourByte(0))
-                    WBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllWeapons(cmbLeftHand1.FindStringExact(dgvWeapons.Rows(i).Cells(0).FormattedValue))))
-                    WBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(1).FormattedValue))
-                    WBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(2).FormattedValue))
-                    WBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(3).FormattedValue))
-                    WBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvWeapons.Rows(i).Cells(4).FormattedValue))
-                    WBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
-                    WBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
+                    WUInt32(&H2DC + invslot * &H20, 0)
+                    WUInt32(&H2E0 + invslot * &H20, Val(cllWeapons(cmbLeftHand1.FindStringExact(dgvWeapons.Rows(i).Cells(0).FormattedValue))))
+                    WUInt32(&H2E4 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(1).FormattedValue))
+                    WUInt32(&H2E8 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(2).FormattedValue))
+                    WUInt32(&H2EC + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(3).FormattedValue))
+                    WUInt32(&H2F0 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(4).FormattedValue))
+                    WUInt32(&H2F4 + invslot * &H20, 0)
+                    WUInt32(&H2F8 + invslot * &H20, 0)
                     invslot += 1
                 Next
             End If
 
             If dgvArmor.Rows.Count > 0 Then
                 For i = 0 To dgvArmor.Rows.Count - 2
-                    WBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H10000000))
-                    WBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllArmor(cmbChest.FindStringExact(dgvArmor.Rows(i).Cells(0).FormattedValue))))
-                    WBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(1).FormattedValue))
-                    WBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(2).FormattedValue))
-                    WBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(3).FormattedValue))
-                    WBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvArmor.Rows(i).Cells(4).FormattedValue))
-                    WBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
-                    WBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
+                    WUInt32(&H2DC + invslot * &H20, &H10000000)
+                    WUInt32(&H2E0 + invslot * &H20, Val(cllArmor(cmbChest.FindStringExact(dgvArmor.Rows(i).Cells(0).FormattedValue))))
+                    WUInt32(&H2E4 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(1).FormattedValue))
+                    WUInt32(&H2E8 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(2).FormattedValue))
+                    WUInt32(&H2EC + invslot * &H20, Val(dgvArmor.Rows(i).Cells(3).FormattedValue))
+                    WUInt32(&H2F0 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(4).FormattedValue))
+                    WUInt32(&H2F4 + invslot * &H20, 0)
+                    WUInt32(&H2F8 + invslot * &H20, 0)
                     invslot += 1
                 Next
             End If
 
             If dgvRings.Rows.Count > 0 Then
                 For i = 0 To dgvRings.Rows.Count - 2
-                    WBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H20000000))
-                    WBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllRings(cmbRing1.FindStringExact(dgvRings.Rows(i).Cells(0).FormattedValue))))
-                    WBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(1).FormattedValue))
-                    WBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(2).FormattedValue))
-                    WBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(3).FormattedValue))
-                    WBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvRings.Rows(i).Cells(4).FormattedValue))
-                    WBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
-                    WBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
+                    WUInt32(&H2DC + invslot * &H20, &H20000000)
+                    WUInt32(&H2E0 + invslot * &H20, Val(cllRings(cmbRing1.FindStringExact(dgvRings.Rows(i).Cells(0).FormattedValue))))
+                    WUInt32(&H2E4 + invslot * &H20, Val(dgvRings.Rows(i).Cells(1).FormattedValue))
+                    WUInt32(&H2E8 + invslot * &H20, Val(dgvRings.Rows(i).Cells(2).FormattedValue))
+                    WUInt32(&H2EC + invslot * &H20, Val(dgvRings.Rows(i).Cells(3).FormattedValue))
+                    WUInt32(&H2F0 + invslot * &H20, Val(dgvRings.Rows(i).Cells(4).FormattedValue))
+                    WUInt32(&H2F4 + invslot * &H20, 0)
+                    WUInt32(&H2F8 + invslot * &H20, 0)
                     invslot += 1
                 Next
             End If
 
             If dgvGoods.Rows.Count > 0 Then
                 For i = 0 To dgvGoods.Rows.Count - 2
-                    WBytes(&H2DC + invslot * &H20, UInt32ToFourByte(&H40000000))
-                    WBytes(&H2E0 + invslot * &H20, UInt32ToFourByte(cllItems(cmbQuickSlot1.FindStringExact(dgvGoods.Rows(i).Cells(0).FormattedValue))))
-                    WBytes(&H2E4 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(1).FormattedValue))
-                    WBytes(&H2E8 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(2).FormattedValue))
-                    WBytes(&H2EC + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(3).FormattedValue))
-                    WBytes(&H2F0 + invslot * &H20, UInt32ToFourByte(dgvGoods.Rows(i).Cells(4).FormattedValue))
-                    WBytes(&H2F4 + invslot * &H20, UInt32ToFourByte(0))
-                    WBytes(&H2F8 + invslot * &H20, UInt32ToFourByte(0))
+                    WUInt32(&H2DC + invslot * &H20, &H40000000)
+                    WUInt32(&H2E0 + invslot * &H20, Val(cllItems(cmbQuickSlot1.FindStringExact(dgvGoods.Rows(i).Cells(0).FormattedValue))))
+                    WUInt32(&H2E4 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(1).FormattedValue))
+                    WUInt32(&H2E8 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(2).FormattedValue))
+                    WUInt32(&H2EC + invslot * &H20, Val(dgvGoods.Rows(i).Cells(3).FormattedValue))
+                    WUInt32(&H2F0 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(4).FormattedValue))
+                    WUInt32(&H2F4 + invslot * &H20, 0)
+                    WUInt32(&H2F8 + invslot * &H20, 0)
                     invslot += 1
                 Next
             End If
 
-            WBytes(&H102E0, UInt32ToFourByte(Val(txtSpellSlots.Text)))
-            WBytes(&H1030C, UInt32ToFourByte(Val(txtMiracleSlots.Text)))
+            WUInt32(&H102E0, Val(Val(txtSpellSlots.Text)))
+            WUInt32(&H1030C, Val(Val(txtMiracleSlots.Text)))
 
-            WBytes(&H143E8, UInt32ToFourByte(dgvSpells.Rows.Count - 1))
+            WUInt32(&H143E8, Val(dgvSpells.Rows.Count - 1))
             invslot = 0
             If dgvSpells.Rows.Count > 0 Then
                 For i = 0 To dgvSpells.Rows.Count - 2
-                    WBytes(&H143EC + invslot * &H10, UInt32ToFourByte(Array.IndexOf(cllSpellStatus, dgvSpells.Rows(i).Cells(1).FormattedValue)))
-                    WBytes(&H143F0 + invslot * &H10, UInt32ToFourByte(cllSpells(cmbSpellSlot1.FindStringExact(dgvSpells.Rows(i).Cells(0).FormattedValue))))
-                    WBytes(&H143F4 + invslot * &H10, UInt32ToFourByte(dgvSpells.Rows(i).Cells(2).FormattedValue))
-                    WBytes(&H143F8 + invslot * &H10, UInt32ToFourByte(dgvSpells.Rows(i).Cells(3).FormattedValue))
+                    WUInt32(&H143EC + invslot * &H10, Val(Array.IndexOf(cllSpellStatus, dgvSpells.Rows(i).Cells(1).FormattedValue)))
+                    WUInt32(&H143F0 + invslot * &H10, Val(cllSpells(cmbSpellSlot1.FindStringExact(dgvSpells.Rows(i).Cells(0).FormattedValue))))
+                    WUInt32(&H143F4 + invslot * &H10, Val(dgvSpells.Rows(i).Cells(2).FormattedValue))
+                    WUInt32(&H143F8 + invslot * &H10, Val(dgvSpells.Rows(i).Cells(3).FormattedValue))
                     invslot += 1
                 Next
             End If
 
-            WBytes(&H14368, FloatToFourByte(txtHairR.Text))
-            WBytes(&H1436C, FloatToFourByte(txtHairG.Text))
-            WBytes(&H14370, FloatToFourByte(txtHairB.Text))
+            WSingle(&H14368, Val(txtHairR.Text))
+            WSingle(&H1436C, Val(txtHairG.Text))
+            WSingle(&H14370, Val(txtHairB.Text))
 
 
-            WBytes(&H1EBF0, FloatToFourByte(txtCharTendency.Text))
+            WSingle(&H1EBF0, Val(txtCharTendency.Text))
 
-            WBytes(&H1EBF8, FloatToFourByte(txtNexusTendency.Text))
-            WBytes(&H1EBFC, FloatToFourByte(txtNexusTendency.Text))
-            WBytes(&H1EC00, FloatToFourByte(txtW1Tendency.Text))
-            WBytes(&H1EC04, FloatToFourByte(txtW1Tendency.Text))
-            WBytes(&H1EC08, FloatToFourByte(txtW4Tendency.Text))
-            WBytes(&H1EC0C, FloatToFourByte(txtW4Tendency.Text))
-            WBytes(&H1EC10, FloatToFourByte(txtW3Tendency.Text))
-            WBytes(&H1EC14, FloatToFourByte(txtW3Tendency.Text))
-            WBytes(&H1EC18, FloatToFourByte(txtW5Tendency.Text))
-            WBytes(&H1EC1C, FloatToFourByte(txtW5Tendency.Text))
-            WBytes(&H1EC20, FloatToFourByte(txtW2Tendency.Text))
-            WBytes(&H1EC24, FloatToFourByte(txtW2Tendency.Text))
+            WSingle(&H1EBF8, Val(txtNexusTendency.Text))
+            WSingle(&H1EBFC, Val(txtNexusTendency.Text))
+            WSingle(&H1EC00, Val(txtW1Tendency.Text))
+            WSingle(&H1EC04, Val(txtW1Tendency.Text))
+            WSingle(&H1EC08, Val(txtW4Tendency.Text))
+            WSingle(&H1EC0C, Val(txtW4Tendency.Text))
+            WSingle(&H1EC10, Val(txtW3Tendency.Text))
+            WSingle(&H1EC14, Val(txtW3Tendency.Text))
+            WSingle(&H1EC18, Val(txtW5Tendency.Text))
+            WSingle(&H1EC1C, Val(txtW5Tendency.Text))
+            WSingle(&H1EC20, Val(txtW2Tendency.Text))
+            WSingle(&H1EC24, Val(txtW2Tendency.Text))
 
             bytes(&H1F965) = (bytes(&H1F965) And &HBF) Or &H40 * ((Not chkArchSealed.Checked) * -1)
 
