@@ -43,7 +43,13 @@ Public Class DeS
     End Function
 
 
+    Private Function RInt16(start) As Int16
+        Dim ba(1) As Byte
+        Array.Copy(bytes, start, ba, 0, 2)
+        If bigendian Then Array.Reverse(ba)
 
+        Return BitConverter.ToInt16(ba, 0)
+    End Function
     Private Function RInt32(start) As Int32
         Dim ba(3) As Byte
         Array.Copy(bytes, start, ba, 0, 4)
@@ -58,13 +64,7 @@ Public Class DeS
 
         Return BitConverter.ToUInt32(ba, 0)
     End Function
-    Private Function RInt16(start) As Int16
-        Dim ba(1) As Byte
-        Array.Copy(bytes, start, ba, 0, 2)
-        If bigendian Then Array.Reverse(ba)
 
-        Return BitConverter.ToInt16(ba, 0)
-    End Function
     Private Function RSingle(start) As Single
         Dim ba(3) As Byte
         Array.Copy(bytes, start, ba, 0, 4)
@@ -166,6 +166,7 @@ Public Class DeS
             txtXpos.Text = RSingle(&H21AE3 + posOffset)
             txtYpos.Text = RSingle(&H21AE3 + posOffset + 4)
             txtZpos.Text = RSingle(&H21AE3 + posOffset + 8)
+            txtRot.Text = RSingle(&H21AE3 + posOffset + &H14)
 
             txtCurrHP.Text = RInt32(&H50)
             txtMaxHP.Text = RInt32(&H58)
@@ -181,10 +182,12 @@ Public Class DeS
             txtMagic.Text = RInt32(&HA8)
             txtFaith.Text = RInt32(&HB0)
             txtLuck.Text = RInt32(&HB8)
-            txtSouls.Text = RInt32(&HC0)
+            txtSouls.Text = RInt32(&HBC)
             txtSoulMem.Text = RInt32(&HC8)
             txtLevelsPurchased.Text = RInt32(&HCC)
 
+
+            txtPhantomType.Text = bytes(&HD3)
             txtName.Text = RUniStr(&HD4, &H21)
 
             cmbGender.SelectedIndex = bytes(&HF6)
@@ -313,6 +316,7 @@ Public Class DeS
             WSingle(&H21AE3 + posOffset, Val(txtXpos.Text))
             WSingle(&H21AE3 + posOffset + 4, Val(txtYpos.Text))
             WSingle(&H21AE3 + posOffset + 8, Val(txtZpos.Text))
+            WSingle(&H21AE3 + posOffset + &H14, Val(txtRot.Text))
 
             WInt32(&H50, Val(txtCurrHP.Text))
             WInt32(&H58, Val(txtMaxHP.Text))
@@ -343,6 +347,7 @@ Public Class DeS
 
             WInt32(&HCC, Val(txtLevelsPurchased.Text))
 
+            bytes(&HD3) = Val(txtPhantomType.Text)
             For i = 0 To &H10
                 If i < txtName.Text.Length Then
                     bytes(&HD5 + i * 2) = Microsoft.VisualBasic.Asc(txtName.Text(i))

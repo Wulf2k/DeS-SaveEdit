@@ -76,6 +76,14 @@ Partial Class DeS
         Me.Label24 = New System.Windows.Forms.Label()
         Me.tabCtrl = New System.Windows.Forms.TabControl()
         Me.tabChar = New System.Windows.Forms.TabPage()
+        Me.txtRot = New System.Windows.Forms.TextBox()
+        Me.Label56 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtXpos = New System.Windows.Forms.TextBox()
+        Me.Label54 = New System.Windows.Forms.Label()
+        Me.txtYpos = New System.Windows.Forms.TextBox()
+        Me.txtZpos = New System.Windows.Forms.TextBox()
+        Me.Label55 = New System.Windows.Forms.Label()
         Me.lblWorldName = New System.Windows.Forms.Label()
         Me.Label53 = New System.Windows.Forms.Label()
         Me.Label51 = New System.Windows.Forms.Label()
@@ -155,12 +163,8 @@ Partial Class DeS
         Me.txtSoulMem = New System.Windows.Forms.TextBox()
         Me.txtProfNum = New System.Windows.Forms.TextBox()
         Me.Label25 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.txtXpos = New System.Windows.Forms.TextBox()
-        Me.Label54 = New System.Windows.Forms.Label()
-        Me.txtYpos = New System.Windows.Forms.TextBox()
-        Me.txtZpos = New System.Windows.Forms.TextBox()
-        Me.Label55 = New System.Windows.Forms.Label()
+        Me.txtPhantomType = New System.Windows.Forms.TextBox()
+        Me.Label57 = New System.Windows.Forms.Label()
         Me.tabCtrl.SuspendLayout()
         Me.tabChar.SuspendLayout()
         Me.TabEquipment.SuspendLayout()
@@ -298,11 +302,11 @@ Partial Class DeS
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(701, 161)
+        Me.Label5.Location = New System.Drawing.Point(661, 161)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(44, 13)
+        Me.Label5.Size = New System.Drawing.Size(84, 13)
         Me.Label5.TabIndex = 12
-        Me.Label5.Text = "World 4"
+        Me.Label5.Text = "Shrine of Storms"
         '
         'txtW5Tendency
         '
@@ -614,6 +618,10 @@ Partial Class DeS
         '
         'tabChar
         '
+        Me.tabChar.Controls.Add(Me.txtPhantomType)
+        Me.tabChar.Controls.Add(Me.Label57)
+        Me.tabChar.Controls.Add(Me.txtRot)
+        Me.tabChar.Controls.Add(Me.Label56)
         Me.tabChar.Controls.Add(Me.Label9)
         Me.tabChar.Controls.Add(Me.txtXpos)
         Me.tabChar.Controls.Add(Me.Label54)
@@ -701,6 +709,70 @@ Partial Class DeS
         Me.tabChar.TabIndex = 0
         Me.tabChar.Text = "Character"
         Me.tabChar.UseVisualStyleBackColor = True
+        '
+        'txtRot
+        '
+        Me.txtRot.Location = New System.Drawing.Point(839, 175)
+        Me.txtRot.Name = "txtRot"
+        Me.txtRot.Size = New System.Drawing.Size(107, 20)
+        Me.txtRot.TabIndex = 90
+        '
+        'Label56
+        '
+        Me.Label56.AutoSize = True
+        Me.Label56.Location = New System.Drawing.Point(814, 178)
+        Me.Label56.Name = "Label56"
+        Me.Label56.Size = New System.Drawing.Size(24, 13)
+        Me.Label56.TabIndex = 89
+        Me.Label56.Text = "Rot"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(814, 115)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(14, 13)
+        Me.Label9.TabIndex = 83
+        Me.Label9.Text = "X"
+        '
+        'txtXpos
+        '
+        Me.txtXpos.Location = New System.Drawing.Point(839, 112)
+        Me.txtXpos.Name = "txtXpos"
+        Me.txtXpos.Size = New System.Drawing.Size(107, 20)
+        Me.txtXpos.TabIndex = 84
+        '
+        'Label54
+        '
+        Me.Label54.AutoSize = True
+        Me.Label54.Location = New System.Drawing.Point(814, 136)
+        Me.Label54.Name = "Label54"
+        Me.Label54.Size = New System.Drawing.Size(14, 13)
+        Me.Label54.TabIndex = 85
+        Me.Label54.Text = "Y"
+        '
+        'txtYpos
+        '
+        Me.txtYpos.Location = New System.Drawing.Point(839, 133)
+        Me.txtYpos.Name = "txtYpos"
+        Me.txtYpos.Size = New System.Drawing.Size(107, 20)
+        Me.txtYpos.TabIndex = 86
+        '
+        'txtZpos
+        '
+        Me.txtZpos.Location = New System.Drawing.Point(839, 154)
+        Me.txtZpos.Name = "txtZpos"
+        Me.txtZpos.Size = New System.Drawing.Size(107, 20)
+        Me.txtZpos.TabIndex = 88
+        '
+        'Label55
+        '
+        Me.Label55.AutoSize = True
+        Me.Label55.Location = New System.Drawing.Point(814, 157)
+        Me.Label55.Name = "Label55"
+        Me.Label55.Size = New System.Drawing.Size(14, 13)
+        Me.Label55.TabIndex = 87
+        Me.Label55.Text = "Z"
         '
         'lblWorldName
         '
@@ -1460,53 +1532,21 @@ Partial Class DeS
         Me.Label25.TabIndex = 60
         Me.Label25.Text = "Profile #"
         '
-        'Label9
+        'txtPhantomType
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(819, 115)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(14, 13)
-        Me.Label9.TabIndex = 83
-        Me.Label9.Text = "X"
+        Me.txtPhantomType.Location = New System.Drawing.Point(550, 53)
+        Me.txtPhantomType.Name = "txtPhantomType"
+        Me.txtPhantomType.Size = New System.Drawing.Size(44, 20)
+        Me.txtPhantomType.TabIndex = 92
         '
-        'txtXpos
+        'Label57
         '
-        Me.txtXpos.Location = New System.Drawing.Point(839, 112)
-        Me.txtXpos.Name = "txtXpos"
-        Me.txtXpos.Size = New System.Drawing.Size(107, 20)
-        Me.txtXpos.TabIndex = 84
-        '
-        'Label54
-        '
-        Me.Label54.AutoSize = True
-        Me.Label54.Location = New System.Drawing.Point(819, 136)
-        Me.Label54.Name = "Label54"
-        Me.Label54.Size = New System.Drawing.Size(14, 13)
-        Me.Label54.TabIndex = 85
-        Me.Label54.Text = "Y"
-        '
-        'txtYpos
-        '
-        Me.txtYpos.Location = New System.Drawing.Point(839, 133)
-        Me.txtYpos.Name = "txtYpos"
-        Me.txtYpos.Size = New System.Drawing.Size(107, 20)
-        Me.txtYpos.TabIndex = 86
-        '
-        'txtZpos
-        '
-        Me.txtZpos.Location = New System.Drawing.Point(839, 154)
-        Me.txtZpos.Name = "txtZpos"
-        Me.txtZpos.Size = New System.Drawing.Size(107, 20)
-        Me.txtZpos.TabIndex = 88
-        '
-        'Label55
-        '
-        Me.Label55.AutoSize = True
-        Me.Label55.Location = New System.Drawing.Point(819, 157)
-        Me.Label55.Name = "Label55"
-        Me.Label55.Size = New System.Drawing.Size(14, 13)
-        Me.Label55.TabIndex = 87
-        Me.Label55.Text = "Z"
+        Me.Label57.AutoSize = True
+        Me.Label57.Location = New System.Drawing.Point(466, 56)
+        Me.Label57.Name = "Label57"
+        Me.Label57.Size = New System.Drawing.Size(76, 13)
+        Me.Label57.TabIndex = 91
+        Me.Label57.Text = "Phantom Type"
         '
         'DeS
         '
@@ -1687,4 +1727,8 @@ Partial Class DeS
     Friend WithEvents txtYpos As TextBox
     Friend WithEvents txtZpos As TextBox
     Friend WithEvents Label55 As Label
+    Friend WithEvents txtRot As TextBox
+    Friend WithEvents Label56 As Label
+    Friend WithEvents txtPhantomType As TextBox
+    Friend WithEvents Label57 As Label
 End Class
