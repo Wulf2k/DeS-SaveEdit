@@ -582,14 +582,11 @@ Public Class DeS
         cllWarps.Add(New WarpAreas With {.name = "Gates of Boletaria, Start", .world = 2, .block = 0, .x = 17.5, .y = 21.2, .z = -159.3, .rot = 3})
         cllWarps.Add(New WarpAreas With {.name = "Gates of Boletaria, Execution Grounds", .world = 2, .block = 0, .x = 9, .y = 19.2, .z = -112.4, .rot = 3})
         cllWarps.Add(New WarpAreas With {.name = "Gates of Boletaria, Phalanx", .world = 2, .block = 0, .x = 18, .y = 30.3, .z = -45.7, .rot = 3})
-
         cllWarps.Add(New WarpAreas With {.name = "The Lord's Path, Start", .world = 2, .block = 1, .x = 17.5, .y = 30.3, .z = 30, .rot = -3.1})
         cllWarps.Add(New WarpAreas With {.name = "The Lord's Path, Tower Knight", .world = 2, .block = 1, .x = 16, .y = 48.1, .z = 418, .rot = -3.1})
-
         cllWarps.Add(New WarpAreas With {.name = "Inner Ward, Start", .world = 2, .block = 2, .x = 13.61, .y = 49.85532, .z = 490, .rot = 3.096834})
         cllWarps.Add(New WarpAreas With {.name = "Inner Ward, Primeval Demon", .world = 2, .block = 2, .x = -106.7565, .y = 82.64002, .z = 574.7698, .rot = 2.242868})
         cllWarps.Add(New WarpAreas With {.name = "Inner Ward, Penetrator", .world = 2, .block = 2, .x = -126.4532, .y = 89.85522, .z = 698.9859, .rot = -2.730344})
-
         cllWarps.Add(New WarpAreas With {.name = "The King's Tower, Start", .world = 2, .block = 3, .x = -127.597, .y = 89.85522, .z = 700.4396, .rot = -3.011745})
         cllWarps.Add(New WarpAreas With {.name = "The King's Tower, King Allant", .world = 2, .block = 3, .x = -10.75906, .y = 137.3006, .z = 989.5961, .rot = 3.133526})
 
