@@ -22,6 +22,19 @@ Public Class DeS
     Public Shared cllSpells() As UInteger
     Public Shared cllSpellStatus() As String
 
+    Public Class WarpAreas
+        Public Property name As String
+        Public Property world As Integer
+        Public Property block As Integer
+        Public Property x As Single
+        Public Property y As Single
+        Public Property z As Single
+        Public Property rot As Single
+
+    End Class
+
+    Public Shared cllWarps As New List(Of WarpAreas)
+
     Public Shared inventory(,) As UInteger
 
     Shared Sub BytesToFile(name As String, b As Byte())
@@ -137,6 +150,7 @@ Public Class DeS
 
             txtProfNum.Text = bytes(&H570)
 
+            cmbLocations.SelectedIndex = 0
 
             If IO.File.Exists(folder + "\PARAM.PFD") Then
                 encrypted = True
@@ -523,6 +537,18 @@ Public Class DeS
     Private Sub txtDeSFile_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtDeSFolder.TextChanged
         folder = UCase(txtDeSFolder.Text)
     End Sub
+    Private Sub cmbLocations_TextChanged(sender As System.Object, e As System.EventArgs) Handles cmbLocations.SelectedIndexChanged
+        Dim area As WarpAreas
+        area = cllWarps.Item(cmbLocations.SelectedIndex)
+
+        txtWorld.Text = area.world
+        txtBlock.Text = area.block
+        txtXpos.Text = area.x
+        txtYpos.Text = area.y
+        txtZpos.Text = area.z
+        txtRot.Text = area.rot
+
+    End Sub
     REM txtWorld
     Private Sub txtWorld_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtWorld.TextChanged
         Select Case txtWorld.Text
@@ -551,6 +577,53 @@ Public Class DeS
     End Sub
 
     Sub InitArrays()
+        cllWarps.Add(New WarpAreas With {.name = "Nexus", .world = 1, .block = 0, .x = 0, .y = 0, .z = 0, .rot = 0})
+
+        cllWarps.Add(New WarpAreas With {.name = "Gates of Boletaria, Start", .world = 2, .block = 0, .x = 17.5, .y = 21.2, .z = -159.3, .rot = 3})
+        cllWarps.Add(New WarpAreas With {.name = "Gates of Boletaria, Execution Grounds", .world = 2, .block = 0, .x = 9, .y = 19.2, .z = -112.4, .rot = 3})
+        cllWarps.Add(New WarpAreas With {.name = "Gates of Boletaria, Phalanx", .world = 2, .block = 0, .x = 18, .y = 30.3, .z = -45.7, .rot = 3})
+
+        cllWarps.Add(New WarpAreas With {.name = "The Lord's Path, Start", .world = 2, .block = 1, .x = 17.5, .y = 30.3, .z = 30, .rot = -3.1})
+        cllWarps.Add(New WarpAreas With {.name = "The Lord's Path, Tower Knight", .world = 2, .block = 1, .x = 16, .y = 48.1, .z = 418, .rot = -3.1})
+
+        cllWarps.Add(New WarpAreas With {.name = "Inner Ward, Start", .world = 2, .block = 2, .x = 13.61, .y = 49.85532, .z = 490, .rot = 3.096834})
+        cllWarps.Add(New WarpAreas With {.name = "Inner Ward, Primeval Demon", .world = 2, .block = 2, .x = -106.7565, .y = 82.64002, .z = 574.7698, .rot = 2.242868})
+        cllWarps.Add(New WarpAreas With {.name = "Inner Ward, Penetrator", .world = 2, .block = 2, .x = -126.4532, .y = 89.85522, .z = 698.9859, .rot = -2.730344})
+
+        cllWarps.Add(New WarpAreas With {.name = "The King's Tower, Start", .world = 2, .block = 3, .x = -127.597, .y = 89.85522, .z = 700.4396, .rot = -3.011745})
+        cllWarps.Add(New WarpAreas With {.name = "The King's Tower, King Allant", .world = 2, .block = 3, .x = -10.75906, .y = 137.3006, .z = 989.5961, .rot = 3.133526})
+
+        cllWarps.Add(New WarpAreas With {.name = "Island's Edge, Start", .world = 3, .block = 1, .x = 7.97, .y = 94.03558, .z = -284.7, .rot = 0.08726646})
+        cllWarps.Add(New WarpAreas With {.name = "Island's Edge, Adjudicator", .world = 3, .block = 1, .x = -5.172104, .y = 99.95853, .z = -420.9297, .rot = 0.07574177})
+        cllWarps.Add(New WarpAreas With {.name = "The Ritual Path, Start", .world = 3, .block = 2, .x = -5.78, .y = 76.12911, .z = -480.2, .rot = 0.07574177})
+        cllWarps.Add(New WarpAreas With {.name = "The Ritual Path, Old Hero", .world = 3, .block = 2, .x = -5.012064, .y = 2.089462, .z = -381.961, .rot = 0})
+        cllWarps.Add(New WarpAreas With {.name = "Altar of Storms, Fog Gate", .world = 3, .block = 3, .x = -4.8, .y = 6.7, .z = -450.9, .rot = 0})
+
+        cllWarps.Add(New WarpAreas With {.name = "Prison of Hope, Start", .world = 4, .block = 0, .x = 0.382294, .y = -0.3461628, .z = -9.23798, .rot = -0.1425018})
+        cllWarps.Add(New WarpAreas With {.name = "Prison of Hope, Fool's Idol", .world = 4, .block = 0, .x = 183.7712, .y = -8.960713, .z = -90.99716, .rot = -1.575552})
+        cllWarps.Add(New WarpAreas With {.name = "Upper Latria, Start", .world = 4, .block = 1, .x = 269.4036, .y = 63.291, .z = -90.70319, .rot = -1.56773})
+        cllWarps.Add(New WarpAreas With {.name = "Upper Latria, Maneater", .world = 4, .block = 1, .x = 451.1812, .y = 153.7941, .z = -152.2556, .rot = -0.2376647})
+        cllWarps.Add(New WarpAreas With {.name = "The Ivory Tower, Old Monk", .world = 4, .block = 2, .x = 569.6729, .y = 158.8221, .z = -160.2182, .rot = 0.4399822})
+
+        cllWarps.Add(New WarpAreas With {.name = "Depraved Chasm, Start", .world = 5, .block = 0, .x = -115.79, .y = 56.5891, .z = 16.65, .rot = -0.2376647})
+        cllWarps.Add(New WarpAreas With {.name = "Depraved Chasm, Leechmonger", .world = 5, .block = 0, .x = 1.473584, .y = 15.29887, .z = 3.775853, .rot = -0.2637722})
+        cllWarps.Add(New WarpAreas With {.name = "Swamp of Sorrow, Start", .world = 5, .block = 1, .x = 84.57, .y = -1.534048, .z = -99.97, .rot = -0.2637722})
+        cllWarps.Add(New WarpAreas With {.name = "Swamp of Sorrow, Dirty Colossus", .world = 5, .block = 1, .x = 98.96488, .y = -21.90017, .z = -395.5395, .rot = 0.3486967})
+        cllWarps.Add(New WarpAreas With {.name = "Rotting Haven, Maiden Astrea", .world = 5, .block = 2, .x = 92.57685, .y = -38.71596, .z = -476.3642, .rot = -1.478803})
+
+        cllWarps.Add(New WarpAreas With {.name = "Smithing Grounds, Start", .world = 6, .block = 0, .x = 112, .y = -2.811987, .z = 8.07, .rot = 1.665429})
+        cllWarps.Add(New WarpAreas With {.name = "Smithing Grounds, Armor Spider", .world = 6, .block = 0, .x = 177.5481, .y = 0, .z = 172.3042, .rot = 0.1381938})
+        cllWarps.Add(New WarpAreas With {.name = "The Tunnel City, Start", .world = 6, .block = 1, .x = 176.8457, .y = 0, .z = 94.86987, .rot = 0.03116584})
+        cllWarps.Add(New WarpAreas With {.name = "The Tunnel City, Flamelurker", .world = 6, .block = 1, .x = 139.0844, .y = -83.3575, .z = -43.80231, .rot = 0.06576228})
+        cllWarps.Add(New WarpAreas With {.name = "Underground Temple, Start", .world = 6, .block = 2, .x = 139.02, .y = -81.5069, .z = -104, .rot = 0.06576228})
+        cllWarps.Add(New WarpAreas With {.name = "Underground Temple, Dragon God", .world = 6, .block = 2, .x = 139.4885, .y = -90.43664, .z = -174.8595, .rot = -0.08869052})
+
+
+        cmbLocations.Items.Clear()
+        For Each warp In cllWarps
+            cmbLocations.Items.Add(warp.name)
+        Next
+
         cllSpells = {&H0, &H1, &H2, &H3, &H4, &H64, &H3E8, &H3E9, &H3EA, &H3EB, &H3EC, &H3ED, &H3EE, &H3EF, &H3F0, &H3F1, &H3F2, &H3F3, &H3F4, &H3F5, &H3F6, &H3F7, &H3F8, &H3F9, &H3FA, &H3FB, &H3FC, &H3FD, &H7D0, &H7D1, &H7D2, &H7D3, &H7D4, &H7D5, &H7D6, &H7D7, &H7D8, &H7D9, &H7DA, &H7DB}
         cllRings = {0, &H64, &H65, &H66, &H67, &H68, &H69, &H6A, &H6B, &H6C, &H6D, &H6E, &H6F, &H70, &H71,
                     &H72, &H73, &H74, &H75, &H76, &H77, &H78, &H79, &H7A, &H7B, &H7C, &H7D, &H7E, &HFFFFFFFF&}

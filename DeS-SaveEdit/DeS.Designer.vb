@@ -76,6 +76,10 @@ Partial Class DeS
         Me.Label24 = New System.Windows.Forms.Label()
         Me.tabCtrl = New System.Windows.Forms.TabControl()
         Me.tabChar = New System.Windows.Forms.TabPage()
+        Me.Label58 = New System.Windows.Forms.Label()
+        Me.cmbLocations = New System.Windows.Forms.ComboBox()
+        Me.txtPhantomType = New System.Windows.Forms.TextBox()
+        Me.Label57 = New System.Windows.Forms.Label()
         Me.txtRot = New System.Windows.Forms.TextBox()
         Me.Label56 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
@@ -163,8 +167,6 @@ Partial Class DeS
         Me.txtSoulMem = New System.Windows.Forms.TextBox()
         Me.txtProfNum = New System.Windows.Forms.TextBox()
         Me.Label25 = New System.Windows.Forms.Label()
-        Me.txtPhantomType = New System.Windows.Forms.TextBox()
-        Me.Label57 = New System.Windows.Forms.Label()
         Me.tabCtrl.SuspendLayout()
         Me.tabChar.SuspendLayout()
         Me.TabEquipment.SuspendLayout()
@@ -231,7 +233,7 @@ Partial Class DeS
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(692, 56)
+        Me.Label1.Location = New System.Drawing.Point(702, 94)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(53, 13)
         Me.Label1.TabIndex = 4
@@ -239,14 +241,14 @@ Partial Class DeS
         '
         'txtCharTendency
         '
-        Me.txtCharTendency.Location = New System.Drawing.Point(748, 53)
+        Me.txtCharTendency.Location = New System.Drawing.Point(761, 91)
         Me.txtCharTendency.Name = "txtCharTendency"
         Me.txtCharTendency.Size = New System.Drawing.Size(44, 20)
         Me.txtCharTendency.TabIndex = 5
         '
         'txtW1Tendency
         '
-        Me.txtW1Tendency.Location = New System.Drawing.Point(748, 95)
+        Me.txtW1Tendency.Location = New System.Drawing.Point(761, 133)
         Me.txtW1Tendency.Name = "txtW1Tendency"
         Me.txtW1Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW1Tendency.TabIndex = 7
@@ -254,15 +256,15 @@ Partial Class DeS
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(701, 98)
+        Me.Label2.Location = New System.Drawing.Point(665, 136)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(44, 13)
+        Me.Label2.Size = New System.Drawing.Size(90, 13)
         Me.Label2.TabIndex = 6
-        Me.Label2.Text = "World 1"
+        Me.Label2.Text = "Boletarian Palace"
         '
         'txtW2Tendency
         '
-        Me.txtW2Tendency.Location = New System.Drawing.Point(748, 116)
+        Me.txtW2Tendency.Location = New System.Drawing.Point(761, 154)
         Me.txtW2Tendency.Name = "txtW2Tendency"
         Me.txtW2Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW2Tendency.TabIndex = 9
@@ -270,15 +272,15 @@ Partial Class DeS
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(701, 119)
+        Me.Label3.Location = New System.Drawing.Point(663, 157)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(44, 13)
+        Me.Label3.Size = New System.Drawing.Size(92, 13)
         Me.Label3.TabIndex = 8
-        Me.Label3.Text = "World 2"
+        Me.Label3.Text = "Stonefang Tunnel"
         '
         'txtW3Tendency
         '
-        Me.txtW3Tendency.Location = New System.Drawing.Point(748, 137)
+        Me.txtW3Tendency.Location = New System.Drawing.Point(761, 175)
         Me.txtW3Tendency.Name = "txtW3Tendency"
         Me.txtW3Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW3Tendency.TabIndex = 11
@@ -286,15 +288,15 @@ Partial Class DeS
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(701, 140)
+        Me.Label4.Location = New System.Drawing.Point(677, 178)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(44, 13)
+        Me.Label4.Size = New System.Drawing.Size(78, 13)
         Me.Label4.TabIndex = 10
-        Me.Label4.Text = "World 3"
+        Me.Label4.Text = "Tower of Latria"
         '
         'txtW4Tendency
         '
-        Me.txtW4Tendency.Location = New System.Drawing.Point(748, 158)
+        Me.txtW4Tendency.Location = New System.Drawing.Point(761, 196)
         Me.txtW4Tendency.Name = "txtW4Tendency"
         Me.txtW4Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW4Tendency.TabIndex = 13
@@ -302,7 +304,7 @@ Partial Class DeS
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(661, 161)
+        Me.Label5.Location = New System.Drawing.Point(671, 199)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(84, 13)
         Me.Label5.TabIndex = 12
@@ -310,7 +312,7 @@ Partial Class DeS
         '
         'txtW5Tendency
         '
-        Me.txtW5Tendency.Location = New System.Drawing.Point(748, 179)
+        Me.txtW5Tendency.Location = New System.Drawing.Point(761, 217)
         Me.txtW5Tendency.Name = "txtW5Tendency"
         Me.txtW5Tendency.Size = New System.Drawing.Size(44, 20)
         Me.txtW5Tendency.TabIndex = 15
@@ -318,16 +320,16 @@ Partial Class DeS
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(701, 182)
+        Me.Label6.Location = New System.Drawing.Point(655, 220)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(44, 13)
+        Me.Label6.Size = New System.Drawing.Size(100, 13)
         Me.Label6.TabIndex = 14
-        Me.Label6.Text = "World 5"
+        Me.Label6.Text = "Valley of Defilement"
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(738, 21)
+        Me.Label7.Location = New System.Drawing.Point(751, 59)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(63, 13)
         Me.Label7.TabIndex = 16
@@ -344,7 +346,7 @@ Partial Class DeS
         '
         'txtNexusTendency
         '
-        Me.txtNexusTendency.Location = New System.Drawing.Point(748, 74)
+        Me.txtNexusTendency.Location = New System.Drawing.Point(761, 112)
         Me.txtNexusTendency.Name = "txtNexusTendency"
         Me.txtNexusTendency.Size = New System.Drawing.Size(44, 20)
         Me.txtNexusTendency.TabIndex = 24
@@ -352,7 +354,7 @@ Partial Class DeS
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(708, 77)
+        Me.Label8.Location = New System.Drawing.Point(718, 115)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(37, 13)
         Me.Label8.TabIndex = 23
@@ -618,6 +620,8 @@ Partial Class DeS
         '
         'tabChar
         '
+        Me.tabChar.Controls.Add(Me.Label58)
+        Me.tabChar.Controls.Add(Me.cmbLocations)
         Me.tabChar.Controls.Add(Me.txtPhantomType)
         Me.tabChar.Controls.Add(Me.Label57)
         Me.tabChar.Controls.Add(Me.txtRot)
@@ -710,9 +714,44 @@ Partial Class DeS
         Me.tabChar.Text = "Character"
         Me.tabChar.UseVisualStyleBackColor = True
         '
+        'Label58
+        '
+        Me.Label58.AutoSize = True
+        Me.Label58.Location = New System.Drawing.Point(689, 9)
+        Me.Label58.Name = "Label58"
+        Me.Label58.Size = New System.Drawing.Size(45, 13)
+        Me.Label58.TabIndex = 94
+        Me.Label58.Text = "Warp to"
+        '
+        'cmbLocations
+        '
+        Me.cmbLocations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbLocations.FormattingEnabled = True
+        Me.cmbLocations.Items.AddRange(New Object() {"Soldier", "Knight", "Hunter", "Priest", "Magician", "Wanderer", "Barbarian", "Thief", "Temple Knight", "Royalty"})
+        Me.cmbLocations.Location = New System.Drawing.Point(749, 6)
+        Me.cmbLocations.Name = "cmbLocations"
+        Me.cmbLocations.Size = New System.Drawing.Size(257, 21)
+        Me.cmbLocations.TabIndex = 93
+        '
+        'txtPhantomType
+        '
+        Me.txtPhantomType.Location = New System.Drawing.Point(550, 53)
+        Me.txtPhantomType.Name = "txtPhantomType"
+        Me.txtPhantomType.Size = New System.Drawing.Size(44, 20)
+        Me.txtPhantomType.TabIndex = 92
+        '
+        'Label57
+        '
+        Me.Label57.AutoSize = True
+        Me.Label57.Location = New System.Drawing.Point(466, 56)
+        Me.Label57.Name = "Label57"
+        Me.Label57.Size = New System.Drawing.Size(76, 13)
+        Me.Label57.TabIndex = 91
+        Me.Label57.Text = "Phantom Type"
+        '
         'txtRot
         '
-        Me.txtRot.Location = New System.Drawing.Point(839, 175)
+        Me.txtRot.Location = New System.Drawing.Point(861, 154)
         Me.txtRot.Name = "txtRot"
         Me.txtRot.Size = New System.Drawing.Size(107, 20)
         Me.txtRot.TabIndex = 90
@@ -720,7 +759,7 @@ Partial Class DeS
         'Label56
         '
         Me.Label56.AutoSize = True
-        Me.Label56.Location = New System.Drawing.Point(814, 178)
+        Me.Label56.Location = New System.Drawing.Point(836, 157)
         Me.Label56.Name = "Label56"
         Me.Label56.Size = New System.Drawing.Size(24, 13)
         Me.Label56.TabIndex = 89
@@ -729,7 +768,7 @@ Partial Class DeS
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(814, 115)
+        Me.Label9.Location = New System.Drawing.Point(836, 94)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(14, 13)
         Me.Label9.TabIndex = 83
@@ -737,7 +776,7 @@ Partial Class DeS
         '
         'txtXpos
         '
-        Me.txtXpos.Location = New System.Drawing.Point(839, 112)
+        Me.txtXpos.Location = New System.Drawing.Point(861, 91)
         Me.txtXpos.Name = "txtXpos"
         Me.txtXpos.Size = New System.Drawing.Size(107, 20)
         Me.txtXpos.TabIndex = 84
@@ -745,7 +784,7 @@ Partial Class DeS
         'Label54
         '
         Me.Label54.AutoSize = True
-        Me.Label54.Location = New System.Drawing.Point(814, 136)
+        Me.Label54.Location = New System.Drawing.Point(836, 115)
         Me.Label54.Name = "Label54"
         Me.Label54.Size = New System.Drawing.Size(14, 13)
         Me.Label54.TabIndex = 85
@@ -753,14 +792,14 @@ Partial Class DeS
         '
         'txtYpos
         '
-        Me.txtYpos.Location = New System.Drawing.Point(839, 133)
+        Me.txtYpos.Location = New System.Drawing.Point(861, 112)
         Me.txtYpos.Name = "txtYpos"
         Me.txtYpos.Size = New System.Drawing.Size(107, 20)
         Me.txtYpos.TabIndex = 86
         '
         'txtZpos
         '
-        Me.txtZpos.Location = New System.Drawing.Point(839, 154)
+        Me.txtZpos.Location = New System.Drawing.Point(861, 133)
         Me.txtZpos.Name = "txtZpos"
         Me.txtZpos.Size = New System.Drawing.Size(107, 20)
         Me.txtZpos.TabIndex = 88
@@ -768,7 +807,7 @@ Partial Class DeS
         'Label55
         '
         Me.Label55.AutoSize = True
-        Me.Label55.Location = New System.Drawing.Point(814, 157)
+        Me.Label55.Location = New System.Drawing.Point(836, 136)
         Me.Label55.Name = "Label55"
         Me.Label55.Size = New System.Drawing.Size(14, 13)
         Me.Label55.TabIndex = 87
@@ -777,7 +816,7 @@ Partial Class DeS
         'lblWorldName
         '
         Me.lblWorldName.AutoSize = True
-        Me.lblWorldName.Location = New System.Drawing.Point(889, 56)
+        Me.lblWorldName.Location = New System.Drawing.Point(911, 35)
         Me.lblWorldName.Name = "lblWorldName"
         Me.lblWorldName.Size = New System.Drawing.Size(57, 13)
         Me.lblWorldName.TabIndex = 82
@@ -871,7 +910,7 @@ Partial Class DeS
         'Label36
         '
         Me.Label36.AutoSize = True
-        Me.Label36.Location = New System.Drawing.Point(741, 35)
+        Me.Label36.Location = New System.Drawing.Point(754, 73)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(54, 13)
         Me.Label36.TabIndex = 75
@@ -975,7 +1014,7 @@ Partial Class DeS
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(801, 56)
+        Me.Label26.Location = New System.Drawing.Point(823, 35)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(35, 13)
         Me.Label26.TabIndex = 60
@@ -983,14 +1022,14 @@ Partial Class DeS
         '
         'txtWorld
         '
-        Me.txtWorld.Location = New System.Drawing.Point(839, 53)
+        Me.txtWorld.Location = New System.Drawing.Point(861, 32)
         Me.txtWorld.Name = "txtWorld"
         Me.txtWorld.Size = New System.Drawing.Size(44, 20)
         Me.txtWorld.TabIndex = 61
         '
         'txtBlock
         '
-        Me.txtBlock.Location = New System.Drawing.Point(839, 74)
+        Me.txtBlock.Location = New System.Drawing.Point(861, 53)
         Me.txtBlock.Name = "txtBlock"
         Me.txtBlock.Size = New System.Drawing.Size(44, 20)
         Me.txtBlock.TabIndex = 63
@@ -998,7 +1037,7 @@ Partial Class DeS
         'Label27
         '
         Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(802, 77)
+        Me.Label27.Location = New System.Drawing.Point(824, 56)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(34, 13)
         Me.Label27.TabIndex = 62
@@ -1532,22 +1571,6 @@ Partial Class DeS
         Me.Label25.TabIndex = 60
         Me.Label25.Text = "Profile #"
         '
-        'txtPhantomType
-        '
-        Me.txtPhantomType.Location = New System.Drawing.Point(550, 53)
-        Me.txtPhantomType.Name = "txtPhantomType"
-        Me.txtPhantomType.Size = New System.Drawing.Size(44, 20)
-        Me.txtPhantomType.TabIndex = 92
-        '
-        'Label57
-        '
-        Me.Label57.AutoSize = True
-        Me.Label57.Location = New System.Drawing.Point(466, 56)
-        Me.Label57.Name = "Label57"
-        Me.Label57.Size = New System.Drawing.Size(76, 13)
-        Me.Label57.TabIndex = 91
-        Me.Label57.Text = "Phantom Type"
-        '
         'DeS
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1731,4 +1754,6 @@ Partial Class DeS
     Friend WithEvents Label56 As Label
     Friend WithEvents txtPhantomType As TextBox
     Friend WithEvents Label57 As Label
+    Friend WithEvents Label58 As Label
+    Friend WithEvents cmbLocations As ComboBox
 End Class
