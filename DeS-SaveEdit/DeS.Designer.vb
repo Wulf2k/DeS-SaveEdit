@@ -167,6 +167,8 @@ Partial Class DeS
         Me.txtSoulMem = New System.Windows.Forms.TextBox()
         Me.txtProfNum = New System.Windows.Forms.TextBox()
         Me.Label25 = New System.Windows.Forms.Label()
+        Me.Label59 = New System.Windows.Forms.Label()
+        Me.txtClearCount = New System.Windows.Forms.TextBox()
         Me.tabCtrl.SuspendLayout()
         Me.tabChar.SuspendLayout()
         Me.TabEquipment.SuspendLayout()
@@ -1529,6 +1531,8 @@ Partial Class DeS
         '
         'tabStats
         '
+        Me.tabStats.Controls.Add(Me.Label59)
+        Me.tabStats.Controls.Add(Me.txtClearCount)
         Me.tabStats.Controls.Add(Me.Label22)
         Me.tabStats.Controls.Add(Me.txtSoulMem)
         Me.tabStats.Location = New System.Drawing.Point(4, 22)
@@ -1570,6 +1574,22 @@ Partial Class DeS
         Me.Label25.Size = New System.Drawing.Size(46, 13)
         Me.Label25.TabIndex = 60
         Me.Label25.Text = "Profile #"
+        '
+        'Label59
+        '
+        Me.Label59.AutoSize = True
+        Me.Label59.Location = New System.Drawing.Point(9, 47)
+        Me.Label59.Name = "Label59"
+        Me.Label59.Size = New System.Drawing.Size(62, 13)
+        Me.Label59.TabIndex = 59
+        Me.Label59.Text = "Clear Count"
+        '
+        'txtClearCount
+        '
+        Me.txtClearCount.Location = New System.Drawing.Point(83, 44)
+        Me.txtClearCount.Name = "txtClearCount"
+        Me.txtClearCount.Size = New System.Drawing.Size(90, 20)
+        Me.txtClearCount.TabIndex = 58
         '
         'DeS
         '
@@ -1756,4 +1776,6 @@ Partial Class DeS
     Friend WithEvents Label57 As Label
     Friend WithEvents Label58 As Label
     Friend WithEvents cmbLocations As ComboBox
+    Friend WithEvents Label59 As Label
+    Friend WithEvents txtClearCount As TextBox
 End Class

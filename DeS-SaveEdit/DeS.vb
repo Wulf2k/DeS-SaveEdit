@@ -299,6 +299,8 @@ Public Class DeS
             txtW4Tendency.Text = RSingle(&H1EC08)
             txtW5Tendency.Text = RSingle(&H1EC18)
 
+            txtClearCount.Text = bytes(&H1EC58)
+
             chkArchSealed.Checked = Not OneByteAnd(&H1F965, &H40)
 
         Catch ex As Exception
@@ -491,6 +493,8 @@ Public Class DeS
             WSingle(&H1EC1C, Val(txtW5Tendency.Text))
             WSingle(&H1EC20, Val(txtW2Tendency.Text))
             WSingle(&H1EC24, Val(txtW2Tendency.Text))
+
+            bytes(&H1EC58) = Val(txtClearCount.Text)
 
             bytes(&H1F965) = (bytes(&H1F965) And &HBF) Or &H40 * ((Not chkArchSealed.Checked) * -1)
 
