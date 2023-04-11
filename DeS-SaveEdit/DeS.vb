@@ -39,7 +39,7 @@ Public Class DeS
 
     Shared Sub BytesToFile(name As String, b As Byte())
         If encrypted Then
-            Dim f As Ps3File = manager.Files.FirstOrDefault(Function(t) t.PFDEntry.file_name = "MASTER.BIN")
+            Dim f As Ps3File = manager.Files.FirstOrDefault(Function(t) t.PFDEntry.file_name = name)
             f.Encrypt(b)
             manager.ReBuildChanges()
         Else
