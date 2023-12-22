@@ -220,7 +220,6 @@ Public Class DeS
             cmbChest.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(&H2A8))
             cmbGauntlets.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(&H2AC))
             cmbLeggings.SelectedIndex = Array.IndexOf(cllArmor, RUInt32(&H2B0))
-
             cmbHairstyle.SelectedIndex = Array.IndexOf(cllHairstyles, RUInt32(&H2B4))
 
             cmbRing1.SelectedIndex = Array.IndexOf(cllRings, RUInt32(&H2B8))
