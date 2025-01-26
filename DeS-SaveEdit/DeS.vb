@@ -70,6 +70,13 @@ Public Class DeS
 
         Return BitConverter.ToInt32(ba, 0)
     End Function
+    Private Function RUInt16(start) As UInt16
+        Dim ba(1) As Byte
+        Array.Copy(bytes, start, ba, 0, 2)
+        If bigendian Then Array.Reverse(ba)
+
+        Return BitConverter.ToUInt16(ba, 0)
+    End Function
     Private Function RUInt32(start) As UInteger
         Dim ba(3) As Byte
         Array.Copy(bytes, start, ba, 0, 4)
@@ -111,6 +118,12 @@ Public Class DeS
     Private Sub WInt8(ByVal loc As UInteger, ByVal val As SByte)
         bytes(loc) = val
     End Sub
+    Private Sub WInt16(ByVal loc As UInteger, ByVal val As Int16)
+        Dim ba(1) As Byte
+        ba = BitConverter.GetBytes(val)
+        If bigendian Then Array.Reverse(ba)
+        WBytes(loc, ba)
+    End Sub
     Private Sub WInt32(ByVal loc As UInteger, ByVal val As Int32)
         Dim ba(3) As Byte
         ba = BitConverter.GetBytes(val)
@@ -119,6 +132,12 @@ Public Class DeS
     End Sub
     Private Sub WUInt8(ByVal loc As UInteger, ByVal val As Byte)
         bytes(loc) = val
+    End Sub
+    Private Sub WUInt16(ByVal loc As UInteger, ByVal val As UInt16)
+        Dim ba(1) As Byte
+        ba = BitConverter.GetBytes(val)
+        If bigendian Then Array.Reverse(ba)
+        WBytes(loc, ba)
     End Sub
     Private Sub WUInt32(ByVal loc As UInteger, ByVal val As UInt32)
         Dim ba(3) As Byte
@@ -137,16 +156,22 @@ Public Class DeS
 
 
     Private Function OneByteAnd(ByVal loc As UInteger, ByVal cmp As UInteger) As Boolean
-        Return ((bytes(loc) And cmp) > 0)
+        Dim val As Byte
+        val = bytes(loc)
+        Dim ret As Boolean
+        ret = (val And cmp) > 0
+        Return ret
     End Function
 
 
     Private Sub btnDeSOpen_Click(sender As System.Object, e As System.EventArgs) Handles btnDeSOpen.Click
 
-
+        If Not txtDeSFolder.Text.EndsWith("\") Then
+            txtDeSFolder.Text = txtDeSFolder.Text + "\"
+        End If
         Try
             filename = "PARAM.SFO"
-            bytes = System.IO.File.ReadAllBytes(txtDeSFolder.Text & "\" & filename)
+            bytes = System.IO.File.ReadAllBytes(txtDeSFolder.Text & filename)
 
             txtProfNum.Text = bytes(&H570)
 
@@ -159,10 +184,22 @@ Public Class DeS
                 encrypted = False
             End If
 
+            Dim saveslot = nmbSaveNum.Value
 
-            If Not IO.File.Exists(txtDeSFolder.Text & "1USER.DAT") Then txtF1.Text = "USER.DAT"
-            If Not IO.File.Exists(txtDeSFolder.Text & "2USER.DAT") Then txtF1.Text = "1USER.DAT"
-            If Not IO.File.Exists(txtDeSFolder.Text & "USER.DAT") Then txtF1.Text = "2USER.DAT"
+
+
+            If saveslot = 1 Then
+                If Not IO.File.Exists(txtDeSFolder.Text & "1USER.DAT") Then txtF1.Text = "USER.DAT"
+                If Not IO.File.Exists(txtDeSFolder.Text & "2USER.DAT") Then txtF1.Text = "1USER.DAT"
+                If Not IO.File.Exists(txtDeSFolder.Text & "USER.DAT") Then txtF1.Text = "2USER.DAT"
+            Else
+                saveslot = saveslot - 1
+                If Not IO.File.Exists(txtDeSFolder.Text & $"0{saveslot}USER.DAT") Then txtF1.Text = $"20{saveslot}USER.DAT"
+                If Not IO.File.Exists(txtDeSFolder.Text & $"10{saveslot}USER.DAT") Then txtF1.Text = $"0{saveslot}USER.DAT"
+                If Not IO.File.Exists(txtDeSFolder.Text & $"20{saveslot}USER.DAT") Then txtF1.Text = $"10{saveslot}USER.DAT"
+            End If
+
+
 
             If Not IO.File.Exists(txtDeSFolder.Text & "04USER.DAT") Then txtF2.Text = "204USER.DAT"
             If Not IO.File.Exists(txtDeSFolder.Text & "104USER.DAT") Then txtF2.Text = "04USER.DAT"
@@ -170,6 +207,8 @@ Public Class DeS
 
             filename = txtF1.Text
             bytes = FileToBytes(filename)
+
+            If RInt32(&H170) = 0 Then MsgBox("Unexpected zeroes, character deleted or false positive?")
 
             txtWorld.Text = Convert.ToUInt16(bytes(&H4))
             txtBlock.Text = Convert.ToUInt16(bytes(&H5))
@@ -242,30 +281,42 @@ Public Class DeS
             dgvSpells.Rows.Clear()
 
             Dim i As UInteger
-            Dim Type As UInteger
+            Dim Type As Integer
             Dim ItemID As UInteger
             Dim ItemCount As UInteger
+            Dim Idx1 As UInt16
             Dim Misc1 As UInteger
+            Dim Idx2 As UInt16
             Dim Misc2 As UInteger
-            Dim Misc3 As UInteger
+            Dim Durability As UInteger
 
+            Dim offset = -&H20
             For i = 0 To invCount - 1
-                Type = RUInt32(&H2DC + i * &H20)
-                ItemID = RUInt32(&H2E0 + i * &H20)
-                ItemCount = RUInt32(&H2E4 + i * &H20)
-                Misc1 = RUInt32(&H2E8 + i * &H20)
-                Misc2 = RUInt32(&H2EC + i * &H20)
-                Misc3 = RUInt32(&H2F0 + i * &H20)
+                Type = -1
+
+                While (Type = -1)
+                    offset += &H20
+                    Type = RInt32(&H2DC + offset)
+                End While
+
+
+                ItemID = RUInt32(&H2E0 + offset)
+                ItemCount = RUInt32(&H2E4 + offset)
+                Idx1 = RUInt32(&H2E8 + offset)    'Array index
+                Misc1 = RUInt16(&H2EC + offset)
+                Idx2 = RUInt16(&H2EE + offset)    'Display index
+                Misc2 = RUInt32(&H2F0 + offset)
+                Durability = RUInt32(&H10364 + Idx1 * 8)
 
                 Select Case Type
                     Case 0
-                        dgvWeapons.Rows.Add(cmbLeftHand1.Items(Array.IndexOf(cllWeapons, ItemID)), ItemCount, Misc1, Misc2, Misc3)
+                        dgvWeapons.Rows.Add(cmbLeftHand1.Items(Array.IndexOf(cllWeapons, ItemID)), ItemCount, Idx1, Misc1, Idx2, Misc2, Durability)
                     Case &H10000000
-                        dgvArmor.Rows.Add(cmbChest.Items(Array.IndexOf(cllArmor, ItemID)), ItemCount, Misc1, Misc2, Misc3)
+                        dgvArmor.Rows.Add(cmbChest.Items(Array.IndexOf(cllArmor, ItemID)), ItemCount, Idx1, Misc1, Idx2, Misc2, Durability)
                     Case &H20000000
-                        dgvRings.Rows.Add(cmbRing1.Items(Array.IndexOf(cllRings, ItemID)), ItemCount, Misc1, Misc2, Misc3)
+                        dgvRings.Rows.Add(cmbRing1.Items(Array.IndexOf(cllRings, ItemID)), ItemCount, Idx1, Misc1, Idx2, Misc2, Durability)
                     Case &H40000000
-                        dgvGoods.Rows.Add(cmbQuickSlot1.Items(Array.IndexOf(cllItems, ItemID)), ItemCount, Misc1, Misc2, Misc3)
+                        dgvGoods.Rows.Add(cmbQuickSlot1.Items(Array.IndexOf(cllItems, ItemID)), ItemCount, Idx1, Misc1, Idx2, Misc2, Durability)
                 End Select
             Next
 
@@ -301,6 +352,18 @@ Public Class DeS
             txtClearCount.Text = bytes(&H1EC58)
 
             chkArchSealed.Checked = Not OneByteAnd(&H1F965, &H40)
+
+            chkEdWorking.Checked = OneByteAnd(&H1FD55, &H4)
+            chkEdHostile.Checked = OneByteAnd(&H1FD55, &H8)
+            chkEdDead.Checked = OneByteAnd(&H1FD55, &H10)
+
+            chkThomasFriendly.Checked = OneByteAnd(&H1FD75, &H40)
+            chkThomasHostile.Checked = OneByteAnd(&H1FD75, &H80)
+            chkThomasDead.Checked = OneByteAnd(&H1FD76, &H1)
+
+            chkBoldwinFriendly.Checked = OneByteAnd(&H1FD81, &H1)
+            chkBoldwinHostile.Checked = OneByteAnd(&H1FD81, &H2)
+            chkBoldwinDead.Checked = OneByteAnd(&H1FD81, &H4)
 
         Catch ex As Exception
             MsgBox("Failed to open save.  Either you or I did something dumb..." & ex.Message)
@@ -398,7 +461,21 @@ Public Class DeS
             REM InsBytes(&H2C8, UInt32ToFourByte(cllItems(cmbQuickSlot3.SelectedIndex)))
             REM InsBytes(&H2CC, UInt32ToFourByte(cllItems(cmbQuickSlot4.SelectedIndex)))
             REM InsBytes(&H2D0, UInt32ToFourByte(cllItems(cmbQuickSlot5.SelectedIndex)))
-            WUInt32(&H2D4, Val(dgvWeapons.Rows.Count + dgvArmor.Rows.Count + dgvRings.Rows.Count + dgvGoods.Rows.Count - 4))
+            Dim invCount = Val(dgvWeapons.Rows.Count + dgvArmor.Rows.Count + dgvRings.Rows.Count + dgvGoods.Rows.Count - 4)
+            WUInt32(&H2D4, invCount)
+            WUInt32(&H10360, invCount)
+
+            For i = 0 To &H800 - 1
+                WInt32(&H2DC + i * &H20, -1)
+                WInt32(&H2E0 + i * &H20, -1)
+                WInt32(&H2E4 + i * &H20, 0)
+                WInt32(&H2E8 + i * &H20, -1)
+                WInt16(&H2EC + i * &H20, -1)
+                WInt16(&H2EE + i * &H20, -1)
+                WInt32(&H2F0 + i * &H20, 0)
+                WInt32(&H2F4 + i * &H20, 0)
+                WInt32(&H2F8 + i * &H20, 0)
+            Next
 
             Dim invslot = 0
 
@@ -406,12 +483,14 @@ Public Class DeS
                 For i = 0 To dgvWeapons.Rows.Count - 2
                     WUInt32(&H2DC + invslot * &H20, 0)
                     WUInt32(&H2E0 + invslot * &H20, Val(cllWeapons(cmbLeftHand1.FindStringExact(dgvWeapons.Rows(i).Cells(0).FormattedValue))))
-                    WUInt32(&H2E4 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(1).FormattedValue))
-                    WUInt32(&H2E8 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(2).FormattedValue))
-                    WUInt32(&H2EC + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(3).FormattedValue))
-                    WUInt32(&H2F0 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(4).FormattedValue))
+                    WUInt32(&H2E4 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(1).FormattedValue))    'ItemCount
+                    WUInt32(&H2E8 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(2).FormattedValue))    'Idx1
+                    WUInt16(&H2EC + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(3).FormattedValue))    'Misc1
+                    WUInt16(&H2EE + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(4).FormattedValue))    'Idx2
+                    WUInt32(&H2F0 + invslot * &H20, Val(dgvWeapons.Rows(i).Cells(5).FormattedValue))    'Misc2
                     WUInt32(&H2F4 + invslot * &H20, 0)
                     WUInt32(&H2F8 + invslot * &H20, 0)
+                    WUInt32(&H10364 + Val(dgvWeapons.Rows(i).Cells(2).FormattedValue) * 8, Val(dgvWeapons.Rows(i).Cells(6).FormattedValue)) 'Durability
                     invslot += 1
                 Next
             End If
@@ -420,12 +499,14 @@ Public Class DeS
                 For i = 0 To dgvArmor.Rows.Count - 2
                     WUInt32(&H2DC + invslot * &H20, &H10000000)
                     WUInt32(&H2E0 + invslot * &H20, Val(cllArmor(cmbChest.FindStringExact(dgvArmor.Rows(i).Cells(0).FormattedValue))))
-                    WUInt32(&H2E4 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(1).FormattedValue))
-                    WUInt32(&H2E8 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(2).FormattedValue))
-                    WUInt32(&H2EC + invslot * &H20, Val(dgvArmor.Rows(i).Cells(3).FormattedValue))
-                    WUInt32(&H2F0 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(4).FormattedValue))
+                    WUInt32(&H2E4 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(1).FormattedValue))    'ItemCount
+                    WUInt32(&H2E8 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(2).FormattedValue))    'Idx1
+                    WUInt16(&H2EC + invslot * &H20, Val(dgvArmor.Rows(i).Cells(3).FormattedValue))    'Misc1
+                    WUInt16(&H2EE + invslot * &H20, Val(dgvArmor.Rows(i).Cells(4).FormattedValue))    'Idx2
+                    WUInt32(&H2F0 + invslot * &H20, Val(dgvArmor.Rows(i).Cells(5).FormattedValue))    'Misc2
                     WUInt32(&H2F4 + invslot * &H20, 0)
                     WUInt32(&H2F8 + invslot * &H20, 0)
+                    WUInt32(&H10364 + Val(dgvArmor.Rows(i).Cells(2).FormattedValue) * 8, Val(dgvArmor.Rows(i).Cells(6).FormattedValue)) 'Durability
                     invslot += 1
                 Next
             End If
@@ -434,12 +515,14 @@ Public Class DeS
                 For i = 0 To dgvRings.Rows.Count - 2
                     WUInt32(&H2DC + invslot * &H20, &H20000000)
                     WUInt32(&H2E0 + invslot * &H20, Val(cllRings(cmbRing1.FindStringExact(dgvRings.Rows(i).Cells(0).FormattedValue))))
-                    WUInt32(&H2E4 + invslot * &H20, Val(dgvRings.Rows(i).Cells(1).FormattedValue))
-                    WUInt32(&H2E8 + invslot * &H20, Val(dgvRings.Rows(i).Cells(2).FormattedValue))
-                    WUInt32(&H2EC + invslot * &H20, Val(dgvRings.Rows(i).Cells(3).FormattedValue))
-                    WUInt32(&H2F0 + invslot * &H20, Val(dgvRings.Rows(i).Cells(4).FormattedValue))
+                    WUInt32(&H2E4 + invslot * &H20, Val(dgvRings.Rows(i).Cells(1).FormattedValue))    'ItemCount
+                    WUInt32(&H2E8 + invslot * &H20, Val(dgvRings.Rows(i).Cells(2).FormattedValue))    'Idx1
+                    WUInt16(&H2EC + invslot * &H20, Val(dgvRings.Rows(i).Cells(3).FormattedValue))    'Misc1
+                    WUInt16(&H2EE + invslot * &H20, Val(dgvRings.Rows(i).Cells(4).FormattedValue))    'Idx2
+                    WUInt32(&H2F0 + invslot * &H20, Val(dgvRings.Rows(i).Cells(5).FormattedValue))    'Misc2
                     WUInt32(&H2F4 + invslot * &H20, 0)
                     WUInt32(&H2F8 + invslot * &H20, 0)
+
                     invslot += 1
                 Next
             End If
@@ -448,12 +531,14 @@ Public Class DeS
                 For i = 0 To dgvGoods.Rows.Count - 2
                     WUInt32(&H2DC + invslot * &H20, &H40000000)
                     WUInt32(&H2E0 + invslot * &H20, Val(cllItems(cmbQuickSlot1.FindStringExact(dgvGoods.Rows(i).Cells(0).FormattedValue))))
-                    WUInt32(&H2E4 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(1).FormattedValue))
-                    WUInt32(&H2E8 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(2).FormattedValue))
-                    WUInt32(&H2EC + invslot * &H20, Val(dgvGoods.Rows(i).Cells(3).FormattedValue))
-                    WUInt32(&H2F0 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(4).FormattedValue))
+                    WUInt32(&H2E4 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(1).FormattedValue))    'ItemCount
+                    WUInt32(&H2E8 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(2).FormattedValue))    'Idx1
+                    WUInt16(&H2EC + invslot * &H20, Val(dgvGoods.Rows(i).Cells(3).FormattedValue))    'Misc1
+                    WUInt16(&H2EE + invslot * &H20, Val(dgvGoods.Rows(i).Cells(4).FormattedValue))    'Idx2
+                    WUInt32(&H2F0 + invslot * &H20, Val(dgvGoods.Rows(i).Cells(5).FormattedValue))    'Misc2
                     WUInt32(&H2F4 + invslot * &H20, 0)
                     WUInt32(&H2F8 + invslot * &H20, 0)
+
                     invslot += 1
                 Next
             End If
@@ -497,6 +582,18 @@ Public Class DeS
 
             bytes(&H1F965) = (bytes(&H1F965) And &HBF) Or &H40 * ((Not chkArchSealed.Checked) * -1)
 
+            bytes(&H1FD55) = (bytes(&H1FD55) And &HFB) Or &H4 * (chkEdWorking.Checked * -1)
+            bytes(&H1FD55) = (bytes(&H1FD55) And &HF7) Or &H8 * (chkEdHostile.Checked * -1)
+            bytes(&H1FD55) = (bytes(&H1FD55) And &HEF) Or &H10 * (chkEdDead.Checked * -1)
+
+            bytes(&H1FD75) = (bytes(&H1FD75) And &HBF) Or &H40 * (chkThomasFriendly.Checked * -1)
+            bytes(&H1FD75) = (bytes(&H1FD75) And &H7F) Or &H80 * (chkThomasHostile.Checked * -1)
+            bytes(&H1FD76) = (bytes(&H1FD76) And &HFE) Or &H1 * (chkThomasDead.Checked * -1)
+
+            bytes(&H1FD81) = (bytes(&H1FD81) And &HFE) Or &H1 * (chkBoldwinFriendly.Checked * -1)
+            bytes(&H1FD81) = (bytes(&H1FD81) And &HFD) Or &H2 * (chkBoldwinHostile.Checked * -1)
+            bytes(&H1FD81) = (bytes(&H1FD81) And &HFB) Or &H4 * (chkBoldwinDead.Checked * -1)
+
             BytesToFile(filename, bytes)
 
 
@@ -507,13 +604,16 @@ Public Class DeS
             bytes = FileToBytes(filename)
 
 
+            Dim saveslot = nmbSaveNum.Value - 1
+
+
             For i = 0 To &H10
                 If i < txtName.Text.Length Then
-                    bytes(&H21D + i * 2) = Microsoft.VisualBasic.Asc(txtName.Text(i))
+                    bytes(&H21D + (saveslot * &H140) + i * 2) = Microsoft.VisualBasic.Asc(txtName.Text(i))
                 Else
-                    bytes(&H21D + i * 2) = 0
+                    bytes(&H21D + (saveslot * &H140) + i * 2) = 0
                 End If
-                bytes(&H21D + i * 2 + 1) = 0
+                bytes(&H21D + (saveslot * &H140) + i * 2 + 1) = 0
             Next
 
             WInt8(&H24C, Val(txtWorld.Text))
@@ -624,6 +724,8 @@ Public Class DeS
             cmbLocations.Items.Add(warp.name)
         Next
 
+
+        'Look upon my works ye mighty, and despair....
         cllSpells = {&H0, &H1, &H2, &H3, &H4, &H64, &H3E8, &H3E9, &H3EA, &H3EB, &H3EC, &H3ED, &H3EE, &H3EF, &H3F0, &H3F1, &H3F2, &H3F3, &H3F4, &H3F5, &H3F6, &H3F7, &H3F8, &H3F9, &H3FA, &H3FB, &H3FC, &H3FD, &H7D0, &H7D1, &H7D2, &H7D3, &H7D4, &H7D5, &H7D6, &H7D7, &H7D8, &H7D9, &H7DA, &H7DB}
         cllRings = {0, &H64, &H65, &H66, &H67, &H68, &H69, &H6A, &H6B, &H6C, &H6D, &H6E, &H6F, &H70, &H71,
                     &H72, &H73, &H74, &H75, &H76, &H77, &H78, &H79, &H7A, &H7B, &H7C, &H7D, &H7E, &HFFFFFFFF&}
@@ -847,6 +949,9 @@ Public Class DeS
                     &H270C, &H270D, &H270E, &H270F, &HFFFFFFFF&}
     End Sub
     Sub InitWeaps(cmbbox As ComboBox)
+        'TODO:  Someday, rebuild this in a sane list/array with proper matching ids.
+        '....Some day.
+
         cmbbox.Items.Clear()
         cmbbox.Items.Add("All-purpose catalyst (For Debugging/For both Magic & Miracles)")
         cmbbox.Items.Add("All-purpose catalyst (For Menu Dummy)")
@@ -2747,12 +2852,16 @@ Public Class DeS
         dgv.Columns(0).Width = 250
         dgv.Columns.Add("Count", "Count")
         dgv.Columns(1).Width = 50
+        dgv.Columns.Add("Idx1", "Idx1") 'Array Index
+        dgv.Columns(2).Width = 50
         dgv.Columns.Add("Misc1", "Misc1")
-        dgv.Columns(2).Width = 100
+        dgv.Columns(3).Width = 50
+        dgv.Columns.Add("Idx2", "Idx2") 'Display Index
+        dgv.Columns(4).Width = 50
         dgv.Columns.Add("Misc2", "Misc2")
-        dgv.Columns(3).Width = 100
-        dgv.Columns.Add("Misc3", "Misc3")
-        dgv.Columns(4).Width = 100
+        dgv.Columns(5).Width = 50
+        dgv.Columns.Add("Durability", "Durability")
+        dgv.Columns(6).Width = 100
     End Sub
     Sub dgvSpellBuild(ByRef dgv As DataGridView, cmb As ComboBox, name As String)
 
@@ -2816,8 +2925,10 @@ Public Class DeS
         With e.Row
             .Cells("Count").Value = 1
             .Cells("Misc1").Value = 0
-            .Cells("Misc2").Value = 0
-            .Cells("Misc3").Value = &H1000000
+            .Cells("Idx1").Value = 999    'Array Index
+            .Cells("Misc2").Value = &H1000000
+            .Cells("Idx2").Value = 999    'Display Index
+            .Cells("Durability").Value = 999
         End With
 
     End Sub

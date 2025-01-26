@@ -163,12 +163,26 @@ Partial Class DeS
         Me.tabFlags = New System.Windows.Forms.TabPage()
         Me.chkArchSealed = New System.Windows.Forms.CheckBox()
         Me.tabStats = New System.Windows.Forms.TabPage()
+        Me.Label59 = New System.Windows.Forms.Label()
+        Me.txtClearCount = New System.Windows.Forms.TextBox()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.txtSoulMem = New System.Windows.Forms.TextBox()
         Me.txtProfNum = New System.Windows.Forms.TextBox()
         Me.Label25 = New System.Windows.Forms.Label()
-        Me.Label59 = New System.Windows.Forms.Label()
-        Me.txtClearCount = New System.Windows.Forms.TextBox()
+        Me.nmbSaveNum = New System.Windows.Forms.NumericUpDown()
+        Me.Label60 = New System.Windows.Forms.Label()
+        Me.chkEdHostile = New System.Windows.Forms.CheckBox()
+        Me.chkEdDead = New System.Windows.Forms.CheckBox()
+        Me.Label61 = New System.Windows.Forms.Label()
+        Me.chkEdWorking = New System.Windows.Forms.CheckBox()
+        Me.chkThomasFriendly = New System.Windows.Forms.CheckBox()
+        Me.Label62 = New System.Windows.Forms.Label()
+        Me.chkThomasDead = New System.Windows.Forms.CheckBox()
+        Me.chkThomasHostile = New System.Windows.Forms.CheckBox()
+        Me.chkBoldwinFriendly = New System.Windows.Forms.CheckBox()
+        Me.Label63 = New System.Windows.Forms.Label()
+        Me.chkBoldwinDead = New System.Windows.Forms.CheckBox()
+        Me.chkBoldwinHostile = New System.Windows.Forms.CheckBox()
         Me.tabCtrl.SuspendLayout()
         Me.tabChar.SuspendLayout()
         Me.TabEquipment.SuspendLayout()
@@ -186,6 +200,7 @@ Partial Class DeS
         CType(Me.dgvSpells, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabFlags.SuspendLayout()
         Me.tabStats.SuspendLayout()
+        CType(Me.nmbSaveNum, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'txtDeSFolder
@@ -1411,10 +1426,10 @@ Partial Class DeS
         Me.TabControl1.Controls.Add(Me.tpRings)
         Me.TabControl1.Controls.Add(Me.tpGoods)
         Me.TabControl1.Controls.Add(Me.tpSpells)
-        Me.TabControl1.Location = New System.Drawing.Point(172, 31)
+        Me.TabControl1.Location = New System.Drawing.Point(150, 31)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(670, 489)
+        Me.TabControl1.Size = New System.Drawing.Size(720, 489)
         Me.TabControl1.TabIndex = 0
         '
         'tpWeapons
@@ -1423,7 +1438,7 @@ Partial Class DeS
         Me.tpWeapons.Location = New System.Drawing.Point(4, 22)
         Me.tpWeapons.Name = "tpWeapons"
         Me.tpWeapons.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpWeapons.Size = New System.Drawing.Size(662, 463)
+        Me.tpWeapons.Size = New System.Drawing.Size(712, 463)
         Me.tpWeapons.TabIndex = 0
         Me.tpWeapons.Text = "Weapons"
         Me.tpWeapons.UseVisualStyleBackColor = True
@@ -1433,7 +1448,7 @@ Partial Class DeS
         Me.dgvWeapons.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvWeapons.Location = New System.Drawing.Point(9, 7)
         Me.dgvWeapons.Name = "dgvWeapons"
-        Me.dgvWeapons.Size = New System.Drawing.Size(643, 450)
+        Me.dgvWeapons.Size = New System.Drawing.Size(693, 450)
         Me.dgvWeapons.TabIndex = 0
         '
         'tpArmor
@@ -1442,7 +1457,7 @@ Partial Class DeS
         Me.tpArmor.Location = New System.Drawing.Point(4, 22)
         Me.tpArmor.Name = "tpArmor"
         Me.tpArmor.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpArmor.Size = New System.Drawing.Size(662, 463)
+        Me.tpArmor.Size = New System.Drawing.Size(712, 463)
         Me.tpArmor.TabIndex = 1
         Me.tpArmor.Text = "Armor"
         Me.tpArmor.UseVisualStyleBackColor = True
@@ -1460,7 +1475,7 @@ Partial Class DeS
         Me.tpRings.Controls.Add(Me.dgvRings)
         Me.tpRings.Location = New System.Drawing.Point(4, 22)
         Me.tpRings.Name = "tpRings"
-        Me.tpRings.Size = New System.Drawing.Size(662, 463)
+        Me.tpRings.Size = New System.Drawing.Size(712, 463)
         Me.tpRings.TabIndex = 2
         Me.tpRings.Text = "Rings"
         Me.tpRings.UseVisualStyleBackColor = True
@@ -1478,7 +1493,7 @@ Partial Class DeS
         Me.tpGoods.Controls.Add(Me.dgvGoods)
         Me.tpGoods.Location = New System.Drawing.Point(4, 22)
         Me.tpGoods.Name = "tpGoods"
-        Me.tpGoods.Size = New System.Drawing.Size(662, 463)
+        Me.tpGoods.Size = New System.Drawing.Size(712, 463)
         Me.tpGoods.TabIndex = 3
         Me.tpGoods.Text = "Goods"
         Me.tpGoods.UseVisualStyleBackColor = True
@@ -1496,7 +1511,7 @@ Partial Class DeS
         Me.tpSpells.Controls.Add(Me.dgvSpells)
         Me.tpSpells.Location = New System.Drawing.Point(4, 22)
         Me.tpSpells.Name = "tpSpells"
-        Me.tpSpells.Size = New System.Drawing.Size(662, 463)
+        Me.tpSpells.Size = New System.Drawing.Size(712, 463)
         Me.tpSpells.TabIndex = 4
         Me.tpSpells.Text = "Spells/Miracles"
         Me.tpSpells.UseVisualStyleBackColor = True
@@ -1511,6 +1526,18 @@ Partial Class DeS
         '
         'tabFlags
         '
+        Me.tabFlags.Controls.Add(Me.chkBoldwinFriendly)
+        Me.tabFlags.Controls.Add(Me.Label63)
+        Me.tabFlags.Controls.Add(Me.chkBoldwinDead)
+        Me.tabFlags.Controls.Add(Me.chkBoldwinHostile)
+        Me.tabFlags.Controls.Add(Me.chkThomasFriendly)
+        Me.tabFlags.Controls.Add(Me.Label62)
+        Me.tabFlags.Controls.Add(Me.chkThomasDead)
+        Me.tabFlags.Controls.Add(Me.chkThomasHostile)
+        Me.tabFlags.Controls.Add(Me.chkEdWorking)
+        Me.tabFlags.Controls.Add(Me.Label61)
+        Me.tabFlags.Controls.Add(Me.chkEdDead)
+        Me.tabFlags.Controls.Add(Me.chkEdHostile)
         Me.tabFlags.Controls.Add(Me.chkArchSealed)
         Me.tabFlags.Location = New System.Drawing.Point(4, 22)
         Me.tabFlags.Name = "tabFlags"
@@ -1543,6 +1570,22 @@ Partial Class DeS
         Me.tabStats.Text = "Statistics"
         Me.tabStats.UseVisualStyleBackColor = True
         '
+        'Label59
+        '
+        Me.Label59.AutoSize = True
+        Me.Label59.Location = New System.Drawing.Point(9, 47)
+        Me.Label59.Name = "Label59"
+        Me.Label59.Size = New System.Drawing.Size(62, 13)
+        Me.Label59.TabIndex = 59
+        Me.Label59.Text = "Clear Count"
+        '
+        'txtClearCount
+        '
+        Me.txtClearCount.Location = New System.Drawing.Point(83, 44)
+        Me.txtClearCount.Name = "txtClearCount"
+        Me.txtClearCount.Size = New System.Drawing.Size(90, 20)
+        Me.txtClearCount.TabIndex = 58
+        '
         'Label22
         '
         Me.Label22.AutoSize = True
@@ -1561,7 +1604,7 @@ Partial Class DeS
         '
         'txtProfNum
         '
-        Me.txtProfNum.Location = New System.Drawing.Point(88, 46)
+        Me.txtProfNum.Location = New System.Drawing.Point(210, 45)
         Me.txtProfNum.Name = "txtProfNum"
         Me.txtProfNum.Size = New System.Drawing.Size(44, 20)
         Me.txtProfNum.TabIndex = 60
@@ -1569,33 +1612,155 @@ Partial Class DeS
         'Label25
         '
         Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(36, 51)
+        Me.Label25.Location = New System.Drawing.Point(133, 50)
         Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(46, 13)
+        Me.Label25.Size = New System.Drawing.Size(71, 13)
         Me.Label25.TabIndex = 60
-        Me.Label25.Text = "Profile #"
+        Me.Label25.Text = "PSN Profile #"
         '
-        'Label59
+        'nmbSaveNum
         '
-        Me.Label59.AutoSize = True
-        Me.Label59.Location = New System.Drawing.Point(9, 47)
-        Me.Label59.Name = "Label59"
-        Me.Label59.Size = New System.Drawing.Size(62, 13)
-        Me.Label59.TabIndex = 59
-        Me.Label59.Text = "Clear Count"
+        Me.nmbSaveNum.Location = New System.Drawing.Point(77, 46)
+        Me.nmbSaveNum.Maximum = New Decimal(New Integer() {4, 0, 0, 0})
+        Me.nmbSaveNum.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.nmbSaveNum.Name = "nmbSaveNum"
+        Me.nmbSaveNum.Size = New System.Drawing.Size(42, 20)
+        Me.nmbSaveNum.TabIndex = 61
+        Me.nmbSaveNum.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'txtClearCount
+        'Label60
         '
-        Me.txtClearCount.Location = New System.Drawing.Point(83, 44)
-        Me.txtClearCount.Name = "txtClearCount"
-        Me.txtClearCount.Size = New System.Drawing.Size(90, 20)
-        Me.txtClearCount.TabIndex = 58
+        Me.Label60.AutoSize = True
+        Me.Label60.Location = New System.Drawing.Point(12, 48)
+        Me.Label60.Name = "Label60"
+        Me.Label60.Size = New System.Drawing.Size(53, 13)
+        Me.Label60.TabIndex = 62
+        Me.Label60.Text = "Save Slot"
+        '
+        'chkEdHostile
+        '
+        Me.chkEdHostile.AutoSize = True
+        Me.chkEdHostile.Location = New System.Drawing.Point(15, 74)
+        Me.chkEdHostile.Name = "chkEdHostile"
+        Me.chkEdHostile.Size = New System.Drawing.Size(128, 17)
+        Me.chkEdHostile.TabIndex = 1
+        Me.chkEdHostile.Text = "Blacksmith Ed Hostile"
+        Me.chkEdHostile.UseVisualStyleBackColor = True
+        '
+        'chkEdDead
+        '
+        Me.chkEdDead.AutoSize = True
+        Me.chkEdDead.Location = New System.Drawing.Point(15, 97)
+        Me.chkEdDead.Name = "chkEdDead"
+        Me.chkEdDead.Size = New System.Drawing.Size(122, 17)
+        Me.chkEdDead.TabIndex = 2
+        Me.chkEdDead.Text = "Blacksmith Ed Dead"
+        Me.chkEdDead.UseVisualStyleBackColor = True
+        '
+        'Label61
+        '
+        Me.Label61.AutoSize = True
+        Me.Label61.Location = New System.Drawing.Point(12, 35)
+        Me.Label61.Name = "Label61"
+        Me.Label61.Size = New System.Drawing.Size(136, 13)
+        Me.Label61.TabIndex = 63
+        Me.Label61.Text = "-------------------------------------------"
+        '
+        'chkEdWorking
+        '
+        Me.chkEdWorking.AutoSize = True
+        Me.chkEdWorking.Location = New System.Drawing.Point(15, 51)
+        Me.chkEdWorking.Name = "chkEdWorking"
+        Me.chkEdWorking.Size = New System.Drawing.Size(136, 17)
+        Me.chkEdWorking.TabIndex = 64
+        Me.chkEdWorking.Text = "Blacksmith Ed Working"
+        Me.chkEdWorking.UseVisualStyleBackColor = True
+        '
+        'chkThomasFriendly
+        '
+        Me.chkThomasFriendly.AutoSize = True
+        Me.chkThomasFriendly.Location = New System.Drawing.Point(15, 133)
+        Me.chkThomasFriendly.Name = "chkThomasFriendly"
+        Me.chkThomasFriendly.Size = New System.Drawing.Size(150, 17)
+        Me.chkThomasFriendly.TabIndex = 68
+        Me.chkThomasFriendly.Text = "Stockpile Thomas Friendly"
+        Me.chkThomasFriendly.UseVisualStyleBackColor = True
+        '
+        'Label62
+        '
+        Me.Label62.AutoSize = True
+        Me.Label62.Location = New System.Drawing.Point(12, 117)
+        Me.Label62.Name = "Label62"
+        Me.Label62.Size = New System.Drawing.Size(136, 13)
+        Me.Label62.TabIndex = 67
+        Me.Label62.Text = "-------------------------------------------"
+        '
+        'chkThomasDead
+        '
+        Me.chkThomasDead.AutoSize = True
+        Me.chkThomasDead.Location = New System.Drawing.Point(15, 179)
+        Me.chkThomasDead.Name = "chkThomasDead"
+        Me.chkThomasDead.Size = New System.Drawing.Size(140, 17)
+        Me.chkThomasDead.TabIndex = 66
+        Me.chkThomasDead.Text = "Stockpile Thomas Dead"
+        Me.chkThomasDead.UseVisualStyleBackColor = True
+        '
+        'chkThomasHostile
+        '
+        Me.chkThomasHostile.AutoSize = True
+        Me.chkThomasHostile.Location = New System.Drawing.Point(15, 156)
+        Me.chkThomasHostile.Name = "chkThomasHostile"
+        Me.chkThomasHostile.Size = New System.Drawing.Size(146, 17)
+        Me.chkThomasHostile.TabIndex = 65
+        Me.chkThomasHostile.Text = "Stockpile Thomas Hostile"
+        Me.chkThomasHostile.UseVisualStyleBackColor = True
+        '
+        'chkBoldwinFriendly
+        '
+        Me.chkBoldwinFriendly.AutoSize = True
+        Me.chkBoldwinFriendly.Location = New System.Drawing.Point(15, 215)
+        Me.chkBoldwinFriendly.Name = "chkBoldwinFriendly"
+        Me.chkBoldwinFriendly.Size = New System.Drawing.Size(156, 17)
+        Me.chkBoldwinFriendly.TabIndex = 72
+        Me.chkBoldwinFriendly.Text = "Blacksmith Boldwin Friendly"
+        Me.chkBoldwinFriendly.UseVisualStyleBackColor = True
+        '
+        'Label63
+        '
+        Me.Label63.AutoSize = True
+        Me.Label63.Location = New System.Drawing.Point(12, 199)
+        Me.Label63.Name = "Label63"
+        Me.Label63.Size = New System.Drawing.Size(136, 13)
+        Me.Label63.TabIndex = 71
+        Me.Label63.Text = "-------------------------------------------"
+        '
+        'chkBoldwinDead
+        '
+        Me.chkBoldwinDead.AutoSize = True
+        Me.chkBoldwinDead.Location = New System.Drawing.Point(15, 261)
+        Me.chkBoldwinDead.Name = "chkBoldwinDead"
+        Me.chkBoldwinDead.Size = New System.Drawing.Size(146, 17)
+        Me.chkBoldwinDead.TabIndex = 70
+        Me.chkBoldwinDead.Text = "Blacksmith Boldwin Dead"
+        Me.chkBoldwinDead.UseVisualStyleBackColor = True
+        '
+        'chkBoldwinHostile
+        '
+        Me.chkBoldwinHostile.AutoSize = True
+        Me.chkBoldwinHostile.Location = New System.Drawing.Point(15, 238)
+        Me.chkBoldwinHostile.Name = "chkBoldwinHostile"
+        Me.chkBoldwinHostile.Size = New System.Drawing.Size(152, 17)
+        Me.chkBoldwinHostile.TabIndex = 69
+        Me.chkBoldwinHostile.Text = "Blacksmith Boldwin Hostile"
+        Me.chkBoldwinHostile.UseVisualStyleBackColor = True
         '
         'DeS
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1030, 654)
+        Me.Controls.Add(Me.Label60)
+        Me.Controls.Add(Me.nmbSaveNum)
         Me.Controls.Add(Me.Label25)
         Me.Controls.Add(Me.txtProfNum)
         Me.Controls.Add(Me.tabCtrl)
@@ -1627,6 +1792,7 @@ Partial Class DeS
         Me.tabFlags.PerformLayout()
         Me.tabStats.ResumeLayout(False)
         Me.tabStats.PerformLayout()
+        CType(Me.nmbSaveNum, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1778,4 +1944,18 @@ Partial Class DeS
     Friend WithEvents cmbLocations As ComboBox
     Friend WithEvents Label59 As Label
     Friend WithEvents txtClearCount As TextBox
+    Friend WithEvents nmbSaveNum As NumericUpDown
+    Friend WithEvents Label60 As Label
+    Friend WithEvents Label61 As Label
+    Friend WithEvents chkEdDead As CheckBox
+    Friend WithEvents chkEdHostile As CheckBox
+    Friend WithEvents chkEdWorking As CheckBox
+    Friend WithEvents chkThomasFriendly As CheckBox
+    Friend WithEvents Label62 As Label
+    Friend WithEvents chkThomasDead As CheckBox
+    Friend WithEvents chkThomasHostile As CheckBox
+    Friend WithEvents chkBoldwinFriendly As CheckBox
+    Friend WithEvents Label63 As Label
+    Friend WithEvents chkBoldwinDead As CheckBox
+    Friend WithEvents chkBoldwinHostile As CheckBox
 End Class
