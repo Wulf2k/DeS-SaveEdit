@@ -439,22 +439,205 @@ Public Class DeS
 
             bytes(&HFB) = cmbStartClass.SelectedIndex
 
+            'Left Hand 1
+            For i = 0 To dgvWeapons.Rows.Count - 1
+                Dim toMatch = Val(cllWeapons(cmbLeftHand1.FindStringExact(cmbLeftHand1.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + i * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H238, i)
+                End If
+            Next
             WUInt32(&H28C, Val(cllWeapons(cmbLeftHand1.SelectedIndex)))
+
+            'Right Hand 1
+            For i = 0 To dgvWeapons.Rows.Count - 1
+                Dim toMatch = Val(cllWeapons(cmbRightHand1.FindStringExact(cmbRightHand1.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + i * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H23C, i)
+                End If
+            Next
             WUInt32(&H290, Val(cllWeapons(cmbRightHand1.SelectedIndex)))
+
+            'Left Hand 2
+            For i = 0 To dgvWeapons.Rows.Count - 1
+                Dim toMatch = Val(cllWeapons(cmbLeftHand2.FindStringExact(cmbLeftHand2.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + i * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H240, i)
+                End If
+            Next
             WUInt32(&H294, Val(cllWeapons(cmbLeftHand2.SelectedIndex)))
+
+            'Right Hand 2
+            For i = 0 To dgvWeapons.Rows.Count - 1
+                Dim toMatch = Val(cllWeapons(cmbRightHand2.FindStringExact(cmbRightHand2.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + i * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H244, i)
+                End If
+            Next
             WUInt32(&H298, Val(cllWeapons(cmbRightHand2.SelectedIndex)))
 
+            'Arrows
+            For i = 0 To dgvWeapons.Rows.Count - 1
+                Dim toMatch = Val(cllWeapons(cmbArrows.FindStringExact(cmbArrows.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + i * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H248, i)
+                End If
+            Next
             WUInt32(&H29C, Val(cllWeapons(cmbArrows.SelectedIndex)))
+
+            'Bolts
+            For i = 0 To dgvWeapons.Rows.Count - 1
+                Dim toMatch = Val(cllWeapons(cmbBolts.FindStringExact(cmbBolts.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + i * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H24C, i)
+                End If
+            Next
             WUInt32(&H2A0, Val(cllWeapons(cmbBolts.SelectedIndex)))
 
+
+            'Helmet
+            For i = 0 To dgvArmor.Rows.Count - 1
+                Dim toMatch = Val(cllArmor(cmbHelmet.FindStringExact(cmbHelmet.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H250, i + dgvWeapons.Rows.Count - 2)
+                End If
+            Next
             WUInt32(&H2A4, Val(cllArmor(cmbHelmet.SelectedIndex)))
+
+            'Chest
+            For i = 0 To dgvArmor.Rows.Count - 1
+                Dim toMatch = Val(cllArmor(cmbChest.FindStringExact(cmbChest.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H254, i + dgvWeapons.Rows.Count - 2)
+                End If
+            Next
             WUInt32(&H2A8, Val(cllArmor(cmbChest.SelectedIndex)))
+
+            'Gauntlets
+            For i = 0 To dgvArmor.Rows.Count - 1
+                Dim toMatch = Val(cllArmor(cmbGauntlets.FindStringExact(cmbGauntlets.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H258, i + dgvWeapons.Rows.Count - 2)
+                End If
+            Next
             WUInt32(&H2AC, Val(cllArmor(cmbGauntlets.SelectedIndex)))
+
+            'Leggings
+            For i = 0 To dgvArmor.Rows.Count - 1
+                Dim toMatch = Val(cllArmor(cmbLeggings.FindStringExact(cmbLeggings.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H25C, i + dgvWeapons.Rows.Count - 2)
+                End If
+            Next
             WUInt32(&H2B0, Val(cllArmor(cmbLeggings.SelectedIndex)))
 
+
             WUInt32(&H2B4, Val(cllHairstyles(cmbHairstyle.SelectedIndex)))
+
+            'Ring 1
+            For i = 0 To dgvArmor.Rows.Count - 1
+                Dim toMatch = Val(cllRings(cmbRing1.FindStringExact(cmbRing1.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H260, i + dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2)
+                End If
+            Next
             WUInt32(&H2B8, Val(cllRings(cmbRing1.SelectedIndex)))
+
+            'Ring 2
+            For i = 0 To dgvArmor.Rows.Count - 1
+                Dim toMatch = Val(cllRings(cmbRing2.FindStringExact(cmbRing2.Text)))
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H264, i + dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2)
+                End If
+            Next
             WUInt32(&H2BC, Val(cllRings(cmbRing2.SelectedIndex)))
+
+            'Goods 1
+            For i = 0 To dgvGoods.Rows.Count - 1
+                Dim toMatch = RInt32(&H2C0)
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H268, i + dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2)
+                End If
+            Next
+            'Goods 2
+            For i = 0 To dgvGoods.Rows.Count - 1
+                Dim toMatch = RInt32(&H2C4)
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H26C, i + dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2)
+                End If
+            Next
+            'Goods 3
+            For i = 0 To dgvGoods.Rows.Count - 1
+                Dim toMatch = RInt32(&H2C8)
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H270, i + dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2)
+                End If
+            Next
+            'Goods 4
+            For i = 0 To dgvGoods.Rows.Count - 1
+                Dim toMatch = RInt32(&H2CC)
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H274, i + dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2)
+                End If
+            Next
+            'Goods 5
+            For i = 0 To dgvGoods.Rows.Count - 1
+                Dim toMatch = RInt32(&H2D0)
+                Dim possibleMatch = RInt32(&H2E0 + (dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2 + i) * &H20)
+
+
+                If toMatch = possibleMatch Then
+                    WUInt32(&H278, i + dgvWeapons.Rows.Count - 2 + dgvArmor.Rows.Count - 2 + dgvRings.Rows.Count - 2)
+                End If
+            Next
+
 
             REM InsBytes(&H2C0, UInt32ToFourByte(cllItems(cmbQuickSlot1.SelectedIndex)))
             REM InsBytes(&H2C4, UInt32ToFourByte(cllItems(cmbQuickSlot2.SelectedIndex)))
